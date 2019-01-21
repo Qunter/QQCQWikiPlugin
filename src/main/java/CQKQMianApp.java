@@ -1,5 +1,5 @@
 import com.mumu.webclient.KQWebClient;
-import control.Jcqapp;
+import control.CQMSGAdapter;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,6 +12,6 @@ public class CQKQMianApp {
     private static KQWebClient cc;
     public static void main(String[] args) throws URISyntaxException {
          cc= new KQWebClient(new URI(KQURL));
-         cc.addQQMSGListenner(new Jcqapp(cc));
+         cc.addQQMSGListenner(new CQMSGAdapter(cc));
     }
 }

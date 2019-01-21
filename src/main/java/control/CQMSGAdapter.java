@@ -3,9 +3,9 @@ package control;
 import com.mumu.listenner.KQMSGAdapter;
 import com.mumu.webclient.KQWebClient;
 
-public class Jcqapp extends KQMSGAdapter{
+public class CQMSGAdapter extends KQMSGAdapter{
     private KQWebClient cc;
-    public Jcqapp(KQWebClient cc){
+    public CQMSGAdapter(KQWebClient cc){
         this.cc=cc;
     }
     //以下是会自动调用的方法
