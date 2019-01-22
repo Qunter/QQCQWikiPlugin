@@ -1,5 +1,5 @@
 import com.mumu.webclient.KQWebClient;
-import control.CQMSGAdapter;
+import controller.CQMSGAdapter;
 
 import java.net.URI;
 import java.net.URISyntaxException;

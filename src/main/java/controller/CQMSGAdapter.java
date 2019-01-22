@@ -1,4 +1,4 @@
-package control;
+package controller;
 
 import com.mumu.listenner.KQMSGAdapter;
 import com.mumu.webclient.KQWebClient;
