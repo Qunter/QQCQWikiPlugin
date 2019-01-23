@@ -37,7 +37,7 @@ public class CQMSGAdapter extends KQMSGAdapter{
     public void RE_MSG_Group(com.mumu.msg.RE_MSG_Group msg) {
         super.RE_MSG_Group(msg);
         //qq:需要@的qq,groupid:发送的群号，msg :发送的消息 ,isAT: 是否需要@发送 true是 false否
-        cc.sendGroupMSG("","100936163","@并发送了: "+msg.getMsg(),true);
+        cc.sendGroupMSG("2426076950","100936163","@并发送了: "+msg.getMsg(),true);
     }
 
 }

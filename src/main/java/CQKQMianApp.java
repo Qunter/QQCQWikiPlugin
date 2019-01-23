@@ -8,7 +8,7 @@ public class CQKQMianApp {
     /**
      * KQURL 酷Q本机地址
      */
-    private static final String KQURL="ws://localhost:253030";
+    private static final String KQURL="ws://localhost:25303";
     private static KQWebClient cc;
     public static void main(String[] args) throws URISyntaxException {
          cc= new KQWebClient(new URI(KQURL));
