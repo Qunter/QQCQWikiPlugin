@@ -42,6 +42,9 @@ public class CQMSGAdapter extends KQMSGAdapter{
         if(msg.getMsg().indexOf("[CQ:at")<0){
             return;
         }
+        if(msg.getMsg().indexOf("qq=2426076950")<0){
+            return;
+        }
         //qq:需要@的qq,groupid:发送的群号，msg :发送的消息 ,isAT: 是否需要@发送 true是 false否
         cc.sendGroupMSG("","100936163",msg.getMsg().split("]")[1],false);
     }
