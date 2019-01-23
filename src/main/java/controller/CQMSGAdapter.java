@@ -38,9 +38,12 @@ public class CQMSGAdapter extends KQMSGAdapter{
      */
     public void RE_MSG_Group(com.mumu.msg.RE_MSG_Group msg) {
         super.RE_MSG_Group(msg);
-        System.out.println("\033[36;0m" +"从群号: "+"\033[33;0m"+msg.getFromQQ()+ "\033[36;0m" + " [接收_"+msg.getNick()+"("+msg.getUsername()+")_消息] : "+"\033[31;0m"+msg.getMsg()+ "\033[0m");
+        System.out.println("\033[36;0m" +"从群号: "+"\033[33;0m"+msg.getFromGroup()+"("+msg.getFromGroupName()+")"+ "\033[36;0m" + " [接收_"+msg.getNick()+"("+msg.getUsername()+")_消息] : "+"\033[31;0m"+msg.getMsg()+ "\033[0m");
+        if(msg.getMsg().indexOf("[CQ:image")>=0||msg.getMsg().indexOf("[CQ:emoji")>=0){
+            return;
+        }
         //qq:需要@的qq,groupid:发送的群号，msg :发送的消息 ,isAT: 是否需要@发送 true是 false否
-        cc.sendGroupMSG("2426076950","100936163","@并发送了: "+msg.getMsg(),true);
+        cc.sendGroupMSG("","100936163",msg.getMsg().split("]")[1],true);
     }
 
 }
