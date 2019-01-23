@@ -1,4 +1,4 @@
 package dao;
 
-public class queryWikiDao {
+public interface queryWikiDao {
 }

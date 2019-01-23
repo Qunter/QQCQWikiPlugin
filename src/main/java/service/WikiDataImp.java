@@ -1,4 +1,4 @@
 package service;
 
-public class WikiDataImp {
+public interface WikiDataImp {
 }
