@@ -2,11 +2,18 @@ package controller;
 
 import com.mumu.listenner.KQMSGAdapter;
 import com.mumu.webclient.KQWebClient;
+import dao.daoImp.ExcelUtil;
+
+import java.io.File;
+import java.util.List;
 
 public class CQMSGAdapter extends KQMSGAdapter{
     private KQWebClient cc;
+    private static List<List<String>> allData;
     public CQMSGAdapter(KQWebClient cc){
         this.cc=cc;
+        File file = new File("allData.xls");
+        this.allData=new ExcelUtil().readExcel(file);
     }
     //以下是会自动调用的方法
     /**
