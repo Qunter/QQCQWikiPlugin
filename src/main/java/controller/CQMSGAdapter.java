@@ -19,6 +19,8 @@ public class CQMSGAdapter extends KQMSGAdapter{
         //读取Excel配置数据
         ExcelUtil excel = new ExcelUtilDao();
         this.allData=excel.readExcel(file);
+        //打印配置信息
+        System.out.println(allData);
     }
     //以下是会自动调用的方法
     /**
@@ -54,7 +56,7 @@ public class CQMSGAdapter extends KQMSGAdapter{
         WikiFilterDataService wikiFilterDataService = new WikiFilterDataServiceImp();
         //打印日志
         System.out.println("\033[36;0m" +"从群号: "+"\033[33;0m"+msg.getFromGroup()+"("+msg.getFromGroupName()+")"+ "\033[36;0m" + " [接收_"+msg.getFromQQ()+"("+msg.getUsername()+")_消息] : "+"\033[31;0m"+msg.getMsg()+ "\033[0m");
-        //判断是否是想要的消息                        //allData 是 allData.xls文件里的数据
+        //判断是否是想要的消息                        //allData 是 allData.xls文件里的数据 参数一：判断消息,参数二：群号 ,参数三：机器人QQ号
         if(wikiFilterDataService.msgFilterSpecific(msg,allData.get(0).get(1),allData.get(1).get(1))){
             //qq:需要@的qq,groupid:发送的群号，msg :发送的消息 ,isAT: 是否需要@发送 true是 false否
             //qq为""则不会返回@，为msg.getFromQQ()则@提问者
