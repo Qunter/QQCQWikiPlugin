@@ -33,9 +33,11 @@ public class ExcelUtilDao implements dao.ExcelUtil {
             List<String> oneData = new ArrayList<>();
             // 得到每一行的单元格的数据
             Cell[] cells = sheet.getRow(j);
-            Arrays.stream(cells).forEach(x->oneData.add(x.getContents().trim()));
+            Arrays.stream(cells).filter(x->!x.getContents().trim().equals("")).forEach(x->oneData.add(x.getContents().trim()));
             // 存储每一条数据
-            allData.add(oneData);
+            if(oneData.size()!=0){
+                allData.add(oneData);
+            }
         }
             return allData;
         }catch (Exception e){

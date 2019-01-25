@@ -54,8 +54,8 @@ public class CQMSGAdapter extends KQMSGAdapter{
         WikiFilterDataService wikiFilterDataService = new WikiFilterDataServiceImp();
         //打印日志
         System.out.println("\033[36;0m" +"从群号: "+"\033[33;0m"+msg.getFromGroup()+"("+msg.getFromGroupName()+")"+ "\033[36;0m" + " [接收_"+msg.getFromQQ()+"("+msg.getUsername()+")_消息] : "+"\033[31;0m"+msg.getMsg()+ "\033[0m");
-        //判断是否是想要的消息
-        if(wikiFilterDataService.msgFilterSpecific(msg)){
+        //判断是否是想要的消息                        //allData 是 allData.xls文件里的数据
+        if(wikiFilterDataService.msgFilterSpecific(msg,allData.get(0).get(1),allData.get(1).get(1))){
             //qq:需要@的qq,groupid:发送的群号，msg :发送的消息 ,isAT: 是否需要@发送 true是 false否
             //qq为""则不会返回@，为msg.getFromQQ()则@提问者
             //groupid为msg.getFromGroup() ，返回所有群；为群号字符串则只回答该群

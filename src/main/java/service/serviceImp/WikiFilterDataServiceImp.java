@@ -4,9 +4,9 @@ import service.WikiFilterDataService;
 
 public class WikiFilterDataServiceImp implements WikiFilterDataService {
 
-    public boolean msgFilterSpecific(com.mumu.msg.RE_MSG_Group msg){
+    public boolean msgFilterSpecific(com.mumu.msg.RE_MSG_Group msg,String groupQQ,String atQQ){
         //只监听该群
-        if(!msg.getFromGroup().toString().equals("189309830"))
+        if(!msg.getFromGroup().toString().equals(groupQQ))//"189309830"
         {
             System.out.println("群不一致");
             return false;
@@ -18,7 +18,7 @@ public class WikiFilterDataServiceImp implements WikiFilterDataService {
             return false;
         }
         //@他才行
-        if(msg.getMsg().indexOf("qq=210889912")<0)
+        if(msg.getMsg().indexOf("qq="+atQQ)<0)//210889912
         {
             System.out.println("需要at他才行");
             return false;
