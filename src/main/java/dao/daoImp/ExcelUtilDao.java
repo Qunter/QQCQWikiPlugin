@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class ExcelUtil implements dao.ExcelUtil {
+public class ExcelUtilDao implements dao.ExcelUtil {
 
     @Override
     public List<List<String>> readExcel(File file) {
