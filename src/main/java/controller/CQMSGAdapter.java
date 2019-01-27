@@ -4,6 +4,8 @@ import com.mumu.listenner.KQMSGAdapter;
 import com.mumu.webclient.KQWebClient;
 import dao.ExcelUtil;
 import dao.daoImp.ExcelUtilDao;
+import dao.daoImp.queryWikiDao;
+import dao.queryWiki;
 import service.WikiFilterDataService;
 import service.serviceImp.WikiFilterDataServiceImp;
 
@@ -21,6 +23,8 @@ public class CQMSGAdapter extends KQMSGAdapter{
         this.allData=excel.readExcel(file);
         //打印配置信息
         System.out.println(allData);
+        queryWiki wikiData = new queryWikiDao();
+        wikiData.getWikiHtmlData("http://wiki.joyme.com/cq/光明剑士里昂");
     }
     //以下是会自动调用的方法
     /**
