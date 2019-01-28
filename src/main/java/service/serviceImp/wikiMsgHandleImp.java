@@ -18,7 +18,7 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      */
     @Override
     public String Warrior_Msg_Handle(RE_MSG_Group msg) {
-        //查询勇士评价
+        //查询勇士评价 查询格式 @机器人 #查询勇士评价:勇士名称
         if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询勇士评价")){
            return Warrior_Hero_est_Msg_Handle(msg);
         }
