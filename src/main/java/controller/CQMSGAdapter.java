@@ -8,6 +8,8 @@ import dao.daoImp.queryWikiDao;
 import dao.queryWiki;
 import service.WikiFilterDataService;
 import service.serviceImp.WikiFilterDataServiceImp;
+import service.serviceImp.wikiMsgHandleImp;
+import service.wikiMsgHandle;
 
 import java.io.File;
 import java.util.List;
@@ -15,16 +17,23 @@ import java.util.List;
 public class CQMSGAdapter extends KQMSGAdapter{
     private KQWebClient cc;
     private static List<List<String>> allData;
+    private static queryWiki wikiData;
+    private static WikiFilterDataService wikiFilterDataService;
+    private static wikiMsgHandle msgHandle;
     public CQMSGAdapter(KQWebClient cc){
         this.cc=cc;
         File file = new File("allData.xls");
         //读取Excel配置数据
         ExcelUtil excel = new ExcelUtilDao();
-        this.allData=excel.readExcel(file);
+        allData=excel.readExcel(file);
         //打印配置信息
         System.out.println(allData);
-        queryWiki wikiData = new queryWikiDao();
-        wikiData.getWikiHtmlData("http://wiki.joyme.com/cq/光明剑士里昂");
+        //初始化wiki页面数据方法
+        wikiData = new queryWikiDao();
+        //初始化过虐方法
+        wikiFilterDataService = new WikiFilterDataServiceImp();
+        //初始业务层
+        msgHandle = new wikiMsgHandleImp();
     }
     //以下是会自动调用的方法
     /**
@@ -57,16 +66,12 @@ public class CQMSGAdapter extends KQMSGAdapter{
     public void RE_MSG_Group(com.mumu.msg.RE_MSG_Group msg) {
         super.RE_MSG_Group(msg);
         //实现消息过滤 类
-        WikiFilterDataService wikiFilterDataService = new WikiFilterDataServiceImp();
         //打印日志
         System.out.println("\033[36;0m" +"从群号: "+"\033[33;0m"+msg.getFromGroup()+"("+msg.getFromGroupName()+")"+ "\033[36;0m" + " [接收_"+msg.getFromQQ()+"("+msg.getUsername()+")_消息] : "+"\033[31;0m"+msg.getMsg()+ "\033[0m");
         //判断是否是想要的消息                        //allData 是 allData.xls文件里的数据 参数一：判断消息,参数二：群号 ,参数三：机器人QQ号
         if(wikiFilterDataService.msgFilterSpecific(msg,allData.get(0).get(1),allData.get(1).get(1))){
-            //qq:需要@的qq,groupid:发送的群号，msg :发送的消息 ,isAT: 是否需要@发送 true是 false否
-            //qq为""则不会返回@，为msg.getFromQQ()则@提问者
-            //groupid为msg.getFromGroup() ，返回所有群；为群号字符串则只回答该群
-            //msg为msg.getMsg()  ，复读
-            cc.sendGroupMSG(msg.getFromQQ(),msg.getFromGroup(),msg.getMsg().split("]")[1],true);
+            //msg.getFromQQ() :回复要@的qq ; msg.getFromGroup():发送消息的群 ;msgHandle.Warrior_Msg_Handle(msg) :消息处理并返回处理结果 ; isAT 回复消息是否要@人 true是
+            cc.sendGroupMSG(msg.getFromQQ(),msg.getFromGroup(),msgHandle.Warrior_Msg_Handle(msg),true);
         }
 
     }
