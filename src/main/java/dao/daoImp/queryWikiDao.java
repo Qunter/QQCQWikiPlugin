@@ -7,6 +7,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *   刚才添加了图鉴的id
@@ -53,6 +56,39 @@ public class queryWikiDao implements queryWiki {
     }
 
     /**
+     * 返回一个勇士简称的map集合
+     * @return Map
+     */
+    @Override
+    public Map<String,String> blurryWarriorName() {
+        try {
+            Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/克鲁赛德战记英雄简称盘点").get();//
+            Elements elements = doc.getElementsByClass("wikitable sortable");
+            Map<String,String> map = new HashMap<>();
+            for (Element element:elements){
+                Elements es = element.select("tr");
+                for(Element tdelement:es){
+                    Elements tdes = tdelement.select("td");
+                    for(int i = 0; i < tdes.size(); i++){
+                        if(i==0){
+                            continue;
+                        }
+                        if (tdes.get(i).text().indexOf(" ")>=0){
+                            Arrays.stream(tdes.get(i).text().split(" ")).forEach(x->map.put(x,tdes.get(0).text()));
+                        }else {
+                            map.put(tdes.get(i).text(),tdes.get(0).text());
+                        }
+                    }
+                }
+            }
+            return map;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+    /**
      * 查询勇士评价信息
      * @param name 要查询的勇士名称(全称)
      * @return
@@ -63,8 +99,8 @@ public class queryWikiDao implements queryWiki {
             Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
             Element element = doc.getElementById("hero_est");
             if(element==null){
-                Elements element2 = doc.getElementsByClass("comment");
-                return element2.select("#hero_est").text();
+                Elements elements = doc.getElementsByClass("comment");
+                return elements.select("#hero_est").text();
             }
             return element.select("#hero_est").text();
     }
