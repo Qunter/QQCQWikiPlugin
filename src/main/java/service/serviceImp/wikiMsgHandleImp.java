@@ -5,6 +5,7 @@ import dao.daoImp.queryWikiDao;
 import dao.queryWiki;
 import service.wikiMsgHandle;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class wikiMsgHandleImp implements wikiMsgHandle {
@@ -23,17 +24,20 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      */
     @Override
     public String Warrior_Msg_Handle(RE_MSG_Group msg) {
-        //查询勇士评价 查询格式 @机器人 #查询勇士评价:勇士名称
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询勇士评价")){
-            if (map.containsKey(msg.getMsg().split("]")[1].split("#")[1].split(":")[1])){
-                return Warrior_Hero_est_Msg_Handle(map.get(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]));
+        //查询类型处理
+        Map<String,String> HandleMap = Handle_Msg(msg);
+        //过滤出勇士名称
+        if(HandleMap.containsKey("hero_est")){
+            if (map.containsKey(map.get(HandleMap.get("hero_est")))){
+                return Warrior_Hero_est_Msg_Handle(map.get(HandleMap.get("hero_est")));
             }
-           return Warrior_Hero_est_Msg_Handle(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
+           return Warrior_Hero_est_Msg_Handle(map.get(HandleMap.get("hero_est")));
         }
         //如果不是查询消息则复读
         return msg.getMsg().split("]")[1];
     }
     /**
+     * name :勇士名称
      * 处理消息:查询勇士评价
      * @return
      */
@@ -48,6 +52,22 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
                 e.printStackTrace();
                 return "查询失败";
             }
+    }
+
+    /**
+     * 查询类型处理并返回
+     * 查询的勇士名称
+     * @param msg
+     * @return
+     */
+    private Map<String,String> Handle_Msg(RE_MSG_Group msg){
+        Map<String,String> HandleMap = new HashMap<>();
+        //查询勇士评价 查询格式 @机器人 #查询勇士评价:勇士名称
+        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询勇士评价")){
+            HandleMap.put("hero_est", msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
+            return HandleMap;
+        }
+        return null;
     }
 
 
