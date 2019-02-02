@@ -45,7 +45,7 @@ public class CQMSGAdapter extends KQMSGAdapter{
         super.Re_MSG_Private(msg);
         System.out.println("\033[36;0m" + "[接收_"+msg.getNick()+"_私聊消息] : "+"\033[31;0m"+msg.getMsg()+ "\033[0m");
         //参数1 :需要发送的qq ,参数2:发送的消息
-        cc.sendPrivateMSG(msg.getFromqq(),"你发送了: "+msg.getMsg());
+        cc.sendPrivateMSG(msg.getFromqq(),msgHandle.Warrior_Msg_Handle_RE_MSG_Private(msg));
 
     }
 

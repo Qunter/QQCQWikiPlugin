@@ -104,4 +104,17 @@ public class queryWikiDao implements queryWiki {
             }
             return element.select("#hero_est").text();
     }
+
+    /**
+     * 通过id 查询勇士数据
+     * @param name 勇士名称
+     * @param id 要查询的数据id
+     * @return 勇士数据
+     */
+    @Override
+    public String getWarrior_data(String name ,String id) throws IOException {
+        Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
+        Element element = doc.getElementById(id);
+        return element.select("#"+id).text();
+    }
 }
