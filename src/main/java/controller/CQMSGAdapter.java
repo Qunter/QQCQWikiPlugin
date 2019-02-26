@@ -2,8 +2,7 @@ package controller;
 
 import com.mumu.listenner.KQMSGAdapter;
 import com.mumu.webclient.KQWebClient;
-import dao.ExcelUtil;
-import dao.daoImp.ExcelUtilDao;
+
 import dao.daoImp.queryWikiDao;
 import dao.queryWiki;
 import service.WikiFilterDataService;
@@ -12,22 +11,24 @@ import service.serviceImp.wikiMsgHandleImp;
 import service.wikiMsgHandle;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CQMSGAdapter extends KQMSGAdapter{
     private KQWebClient cc;
-    private static List<List<String>> allData;
+    private static List<String> allData=new ArrayList<String>();
     private static queryWiki wikiData;
     private static WikiFilterDataService wikiFilterDataService;
     private static wikiMsgHandle msgHandle;
     public CQMSGAdapter(KQWebClient cc){
         this.cc=cc;
-        File file = new File("allData.xls");
-        //读取Excel配置数据
-        ExcelUtil excel = new ExcelUtilDao();
-        allData=excel.readExcel(file);
+       
+         //发送消息的群:
+        allData.add("-");
+        //发送消息QQ:
+        allData.add("-");
         //打印配置信息
-        System.out.println(allData);
+        //System.out.println(allData);
         //初始化wiki页面数据方法
         wikiData = new queryWikiDao();
         //初始化过虐方法
@@ -67,13 +68,15 @@ public class CQMSGAdapter extends KQMSGAdapter{
         super.RE_MSG_Group(msg);
         //实现消息过滤 类
         //打印日志
-        System.out.println("\033[36;0m" +"从群号: "+"\033[33;0m"+msg.getFromGroup()+"("+msg.getFromGroupName()+")"+ "\033[36;0m" + " [接收_"+msg.getFromQQ()+"("+msg.getUsername()+")_消息] : "+"\033[31;0m"+msg.getMsg()+ "\033[0m");
+        System.out.println("从群号: "+msg.getFromGroup()+"中的("+msg.getFromGroupName()+") [接收_"+msg.getFromQQ()+"("+msg.getUsername()+")_消息]:"+msg.getMsg());
         //判断是否是想要的消息                        //allData 是 allData.xls文件里的数据 参数一：判断消息,参数二：群号 ,参数三：机器人QQ号
-        if(wikiFilterDataService.msgFilterSpecific(msg,allData.get(0).get(1),allData.get(1).get(1))){
+        if(wikiFilterDataService.msgFilterSpecific(msg,allData.get(0),allData.get(1))){
             //msg.getFromQQ() :回复要@的qq ; msg.getFromGroup():发送消息的群 ;msgHandle.Warrior_Msg_Handle(msg) :消息处理并返回处理结果 ; isAT 回复消息是否要@人 true是
-            cc.sendGroupMSG(msg.getFromQQ(),msg.getFromGroup(),msgHandle.Warrior_Msg_Handle(msg),true);
+            cc.sendGroupMSG(msg.getFromQQ(),msg.getFromGroup(),msgHandle.Warrior_Msg_Handle(msg),false);
+          
         }
 
     }
 
 }
+
