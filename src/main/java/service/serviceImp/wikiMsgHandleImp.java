@@ -2,6 +2,7 @@ package service.serviceImp;
 
 import com.mumu.msg.RE_MSG_Group;
 import com.mumu.msg.RE_MSG_Private;
+
 import dao.daoImp.queryWikiDao;
 import dao.queryWiki;
 import service.wikiMsgHandle;
@@ -35,6 +36,10 @@ import java.util.Map;
  *符文推荐=hero_wp_ct
  *戒指词条推荐=hero_ring
  *推荐阵容搭配=hero_team
+ * 服装=hero_costume
+ * 城镇对话=hero_dialogue
+ * 全部评分=hero_score
+ * 能力值=hero_state
  */
 public class wikiMsgHandleImp implements wikiMsgHandle {
     private static queryWiki wikiData;
@@ -50,7 +55,6 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @param msg 群消息类
      * @return 查询结果
      */
-    @Override
     public String Warrior_Msg_Handle(RE_MSG_Group msg) {
         //查询类型处理
         List<String> myList = Handle_Msg(msg);
@@ -70,7 +74,6 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @param msg 群消息类
      * @return 查询结果
      */
-    @Override
     public String Warrior_Msg_Handle_RE_MSG_Private(RE_MSG_Private msg){
         //查询类型处理
         List<String> myList = Handle_Msg_Private(msg);
@@ -115,8 +118,59 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
         if (map.containsKey(name)){
             return wikiData.getWarrior_data(map.get(name),id);
         }else {
-            return wikiData.getWarrior_data(name,id);
+        	if (map.containsValue(name)){
+        		return wikiData.getWarrior_data(name,id);
+        		}
+        	return "未查询到数据";
         }
+    }
+    /**
+     * 关键字处理
+     
+     */
+	private String Processkeyword (String keyword){
+    	Map<String,String> keymap = new HashMap<String,String>();
+    	keymap.put("勇士评价", "hero_est");
+    	keymap.put("评价", "hero_est");
+    	keymap.put("专武", "hero_wp");
+    	keymap.put("专属武器", "hero_wp");
+    	keymap.put("精粹武器", "hero_wp");
+    	keymap.put("专属精粹武器", "hero_wp");
+    	keymap.put("方块技能", "hero_skill");
+    	keymap.put("主动技能", "hero_skill");
+    	keymap.put("背景", "hero_story");
+    	keymap.put("故事", "hero_story");
+    	keymap.put("背景故事", "hero_story");
+    	keymap.put("特殊技能", "hero_skill_sp");
+    	keymap.put("sp", "hero_skill_sp");
+    	keymap.put("词条推荐", "hero_wp_attr");
+    	keymap.put("词条", "hero_wp_attr");
+    	keymap.put("符文推荐", "hero_wp_ct");
+    	keymap.put("符文", "hero_wp_ct");
+    	keymap.put("戒指", "hero_ring");
+    	keymap.put("戒指词条", "hero_ring");
+    	keymap.put("推荐阵容", "hero_team");
+    	keymap.put("组队", "hero_team");
+    	keymap.put("队伍", "hero_team");
+    	keymap.put("阵容", "hero_team");
+    	keymap.put("搭配", "hero_team");
+    	keymap.put("无专", "hero_skill_nwp");
+    	keymap.put("有专", "hero_skill_wp");
+    	keymap.put("消块", "hero_skill_m");
+    	keymap.put("消块机制", "hero_skill_m");
+    	keymap.put("吃书", "hero_book");
+    	keymap.put("继承", "hero_book");
+    	
+    	keymap.put("服装", "hero_costume");
+    	keymap.put("时装", "hero_costume");
+    	keymap.put("衣服", "hero_costume");
+    	keymap.put("小裙子", "hero_costume");
+    	keymap.put("对话", "hero_dialogue");
+    	keymap.put("彩蛋", "hero_dialogue");
+    	keymap.put("评分", "hero_score");
+    	keymap.put("英雄评分", "hero_score");
+    	keymap.put("属性", "hero_state");
+		return keymap.get(keyword);
     }
     /**
      * 查询类型处理并返回
@@ -125,80 +179,20 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @return
      */
     private List<String> Handle_Msg(RE_MSG_Group msg){
-        List<String> list = new ArrayList<>();
-        //查询勇士评价 查询格式 @机器人 #查询勇士评价:勇士名称
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询勇士评价")){
-            list.add("hero_est");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询勇士方块技能")){
-            list.add("hero_skill");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询专属精粹武器")){
-            list.add("hero_wp");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询专武评价")){
-            list.add("hero_wp_est");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询背景故事")){
-            list.add("hero_story");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        //web id 暂时没加上 hero_skill_sp
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询特殊技能推荐")){
-            list.add("hero_skill_sp");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询词条推荐")){
-            list.add("hero_wp_attr");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询符文推荐")){
-            list.add("hero_wp_ct");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询戒指词条推荐")){
-            list.add("hero_ring");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询推荐阵容搭配")){
-            list.add("hero_team");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询有专武技能判定")){
-            list.add("hero_skill_wp");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询无专武技能判定")){
-            list.add("hero_skill_nwp");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询消块机制")){
-            list.add("hero_skill_m");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        if(msg.getMsg().split("]")[1].split("#")[1].split(":")[0].equals("查询吃书推荐")){
-            list.add("hero_book");
-            list.add(msg.getMsg().split("]")[1].split("#")[1].split(":")[1]);
-            return list;
-        }
-        return null;
+    	String getMsg=msg.getMsg().trim().replaceAll("\r|\n", "");
+    	
+        List<String> list = new ArrayList<String>();
+        //查询格式   格式 勇士简称或名称 关键词
+        String keyword=Processkeyword(getMsg.split(" ")[2]);
+        if(keyword!=null&&keyword.length()>0)
+        list.add(keyword);
+        else return null;
+        String heroname=getMsg.split(" ")[1];
+        if(heroname!=null&&heroname.length()>0)
+        list.add(heroname);
+        else return null;
+        return list;
+
     }
 
     /**
@@ -207,7 +201,7 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @return 处理结果
      */
     private List<String> Handle_Msg_Private(RE_MSG_Private msg){
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         //查询勇士评价 查询格式 @机器人 #查询勇士评价:勇士名称
         if(msg.getMsg().split(":")[0].equals("查询勇士评价")){
             list.add("hero_est");
