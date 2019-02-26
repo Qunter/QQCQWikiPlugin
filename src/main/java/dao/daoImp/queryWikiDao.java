@@ -43,7 +43,6 @@ public class queryWikiDao implements queryWiki {
      * @param url
      * @return
      */
-    @Override
     public String getWikiHtmlData(String url) {
         try {
             Document doc =  Jsoup.connect(url).get();//
@@ -59,12 +58,11 @@ public class queryWikiDao implements queryWiki {
      * 返回一个勇士简称的map集合
      * @return Map
      */
-    @Override
     public Map<String,String> blurryWarriorName() {
         try {
             Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/克鲁赛德战记英雄简称盘点").get();//
             Elements elements = doc.getElementsByClass("wikitable sortable");
-            Map<String,String> map = new HashMap<>();
+            Map<String,String> map = new HashMap<String,String>();
             for (Element element:elements){
                 Elements es = element.select("tr");
                 for(Element tdelement:es){
@@ -94,7 +92,6 @@ public class queryWikiDao implements queryWiki {
      * @return
      * @throws Exception
      */
-    @Override
     public String getWarrior_Hero_est(String name) throws Exception{
             Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
             Element element = doc.getElementById("hero_est");
@@ -111,7 +108,6 @@ public class queryWikiDao implements queryWiki {
      * @param id 要查询的数据id
      * @return 勇士数据
      */
-    @Override
     public String getWarrior_data(String name ,String id) throws IOException {
         Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
         Element element = doc.getElementById(id);
