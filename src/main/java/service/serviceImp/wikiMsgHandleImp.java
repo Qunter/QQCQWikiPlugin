@@ -44,23 +44,84 @@ import java.util.Map;
 public class wikiMsgHandleImp implements wikiMsgHandle {
     private static queryWiki wikiData;
     private static Map<String,String> map;
+    Map<String,String> keymap ;
     public wikiMsgHandleImp(){
         wikiData =new queryWikiDao();
         //加载模糊匹配数据
         map = wikiData.blurryWarriorName();
+        putkeymap();
     }
-
+    /**
+     * 补充关键字库
+     */
+    public void putkeymap(){
+    	keymap= new HashMap<String,String>();
+    	keymap.put("勇士评价", "hero_est");
+    	keymap.put("评价", "hero_est");
+    	keymap.put("专武", "hero_wp_r6");
+    	keymap.put("专属武器", "hero_wp_r6");
+    	keymap.put("精粹武器", "hero_wp_r6");
+    	keymap.put("专属精粹武器", "hero_wp_r6");
+    	keymap.put("方块技能", "hero_skill");
+    	keymap.put("技能", "hero_skill");
+    	keymap.put("主动技能", "hero_skill_0");
+    	keymap.put("被动技能", "hero_skill_2");
+    	keymap.put("背景", "hero_story");
+    	keymap.put("故事", "hero_story");
+    	keymap.put("背景故事", "hero_story");
+    	keymap.put("特殊技能", "hero_skill_sp");
+    	keymap.put("sp", "hero_skill_sp");
+    	keymap.put("词条推荐", "hero_wp_attr");
+    	keymap.put("词条", "hero_wp_attr");
+    	keymap.put("符文推荐", "hero_wp_ct");
+    	keymap.put("符文", "hero_wp_ct");
+    	keymap.put("戒指", "hero_ring");
+    	keymap.put("戒指词条", "hero_ring");
+    	keymap.put("推荐阵容", "hero_team");
+    	keymap.put("组队", "hero_team");
+    	keymap.put("队伍", "hero_team");
+    	keymap.put("阵容", "hero_team");
+    	keymap.put("搭配", "hero_team");
+    	keymap.put("无专", "hero_skill_nwp");
+    	keymap.put("有专", "hero_skill_wp");
+    	keymap.put("消块", "hero_skill_m");
+    	keymap.put("消块机制", "hero_skill_m");
+    	//keymap.put("吃书", "hero_book");
+    	//keymap.put("继承", "hero_book");
+    	
+    	keymap.put("服装", "hero_costume");
+    	keymap.put("时装", "hero_costume");
+    	keymap.put("衣服", "hero_costume");
+    	keymap.put("小裙子", "hero_costume");
+    	keymap.put("对话", "hero_dialogue");
+    	keymap.put("彩蛋", "hero_dialogue");
+    	keymap.put("评分", "hero_score");
+    	keymap.put("英雄评分", "hero_score");
+    	keymap.put("属性", "hero_state");
+    }
+    
     /**
      * 群消息处理中枢
      * @param msg 群消息类
      * @return 查询结果
      */
     public String Warrior_Msg_Handle(RE_MSG_Group msg) {
+    	//帮助类型
+    	if(msg.getMsg().trim().indexOf("帮助")!=-1){
+    		System.out.println("执行帮助关键词");
+    		String usehelp="查询格式为：指令 勇士简称或名称 关键词 [CQ:enter]";
+    		usehelp+="1.指令包括‘查询’和‘帮助’，帮助不需要参数 [CQ:enter]";
+    		usehelp+="2.勇士简称或名称参考wiki简称页面 [CQ:enter]";
+    		usehelp+="3.关键词如下："+keymap.keySet().toString();
+        	return usehelp;
+        }
+    	
         //查询类型处理
         List<String> myList = Handle_Msg(msg);
         //过滤出勇士名称
         try {
             if(myList!=null&&myList.size()>0){
+            	//System.out.println(getWarriorData(myList.get(1),myList.get(0)));
                 return getWarriorData(myList.get(1),myList.get(0));
             }
             return "未查询到数据";
@@ -88,24 +149,6 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
             return "消息异常";
         }
     }
-    /**
-     * name :勇士名称
-     * 处理消息:查询勇士评价
-     * @return 查询结果
-     */
-    @Deprecated
-    private String Warrior_Hero_est_Msg_Handle(String name){
-        //qq:需要@的qq,groupid:发送的群号，msg :发送的消息 ,isAT: 是否需要@发送 true是 false否
-        //qq为""则不会返回@，为msg.getFromQQ()则@提问者
-        //groupid为msg.getFromGroup() ，返回所有群；为群号字符串则只回答该群
-        //msg为msg.getMsg()  ，复读
-            try {
-                return wikiData.getWarrior_Hero_est(name);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "查询失败";
-            }
-    }
 
     /**
      * 返回 勇士数据方法
@@ -118,60 +161,10 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
         if (map.containsKey(name)){
             return wikiData.getWarrior_data(map.get(name),id);
         }else {
-        	if (map.containsValue(name)){
-        		return wikiData.getWarrior_data(name,id);
-        		}
         	return "未查询到数据";
         }
     }
-    /**
-     * 关键字处理
-     
-     */
-	private String Processkeyword (String keyword){
-    	Map<String,String> keymap = new HashMap<String,String>();
-    	keymap.put("勇士评价", "hero_est");
-    	keymap.put("评价", "hero_est");
-    	keymap.put("专武", "hero_wp");
-    	keymap.put("专属武器", "hero_wp");
-    	keymap.put("精粹武器", "hero_wp");
-    	keymap.put("专属精粹武器", "hero_wp");
-    	keymap.put("方块技能", "hero_skill");
-    	keymap.put("主动技能", "hero_skill");
-    	keymap.put("背景", "hero_story");
-    	keymap.put("故事", "hero_story");
-    	keymap.put("背景故事", "hero_story");
-    	keymap.put("特殊技能", "hero_skill_sp");
-    	keymap.put("sp", "hero_skill_sp");
-    	keymap.put("词条推荐", "hero_wp_attr");
-    	keymap.put("词条", "hero_wp_attr");
-    	keymap.put("符文推荐", "hero_wp_ct");
-    	keymap.put("符文", "hero_wp_ct");
-    	keymap.put("戒指", "hero_ring");
-    	keymap.put("戒指词条", "hero_ring");
-    	keymap.put("推荐阵容", "hero_team");
-    	keymap.put("组队", "hero_team");
-    	keymap.put("队伍", "hero_team");
-    	keymap.put("阵容", "hero_team");
-    	keymap.put("搭配", "hero_team");
-    	keymap.put("无专", "hero_skill_nwp");
-    	keymap.put("有专", "hero_skill_wp");
-    	keymap.put("消块", "hero_skill_m");
-    	keymap.put("消块机制", "hero_skill_m");
-    	keymap.put("吃书", "hero_book");
-    	keymap.put("继承", "hero_book");
-    	
-    	keymap.put("服装", "hero_costume");
-    	keymap.put("时装", "hero_costume");
-    	keymap.put("衣服", "hero_costume");
-    	keymap.put("小裙子", "hero_costume");
-    	keymap.put("对话", "hero_dialogue");
-    	keymap.put("彩蛋", "hero_dialogue");
-    	keymap.put("评分", "hero_score");
-    	keymap.put("英雄评分", "hero_score");
-    	keymap.put("属性", "hero_state");
-		return keymap.get(keyword);
-    }
+
     /**
      * 查询类型处理并返回
      * 查询的勇士名称
@@ -183,7 +176,7 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
     	
         List<String> list = new ArrayList<String>();
         //查询格式   格式 勇士简称或名称 关键词
-        String keyword=Processkeyword(getMsg.split(" ")[2]);
+        String keyword=keymap.get(getMsg.split(" ")[2]);
         if(keyword!=null&&keyword.length()>0)
         list.add(keyword);
         else return null;
