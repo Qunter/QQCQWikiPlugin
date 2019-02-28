@@ -1,6 +1,7 @@
 package dao.daoImp;
 
 import dao.queryWiki;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,6 +36,10 @@ import java.util.Map;
      符文推荐=hero_wp_ct
      戒指词条推荐=hero_ring
      推荐阵容搭配=hero_team
+     服装=hero_costume
+     城镇对话=hero_dialogue
+     全部评分=hero_score
+     能力值=hero_state
  */
 
 public class queryWikiDao implements queryWiki {
@@ -69,6 +74,7 @@ public class queryWikiDao implements queryWiki {
                     Elements tdes = tdelement.select("td");
                     for(int i = 0; i < tdes.size(); i++){
                         if(i==0){
+                        	map.put(tdes.get(0).text(),tdes.get(0).text());
                             continue;
                         }
                         if (tdes.get(i).text().indexOf(" ")>=0){
@@ -113,4 +119,98 @@ public class queryWikiDao implements queryWiki {
         Element element = doc.getElementById(id);
         return element.select("#"+id).text();
     }
+    /**
+     * 通过id 查询勇士对话数据
+     * @param name 勇士名称
+     * @param id 要查询的数据id
+     * @return 勇士对话数据
+     */
+    public String getWarrior_dialogue(String name ,String id) throws IOException {
+        Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
+        Element element = doc.getElementById(id);
+        String dialogue="";
+        Elements tdes = element.select("td");
+        for (Element td:tdes){
+        Elements talk = td.getElementsByClass("hero_talk1");
+        Elements talker = td.getElementsByClass("hero_name_talk1");
+        for(int i = 0; i < talk.size(); i++){
+        		dialogue+=talker.get(i).text();
+        		dialogue+=":";
+        		dialogue+=talk.get(i).text();
+        		dialogue+=" ";	
+        }
+        dialogue+="[enter]";//输入回车
+        }
+        return dialogue;
+    }
+
+    /**
+     * 通过id 查询勇士属性数据
+     * @param name 勇士名称
+     * @param id 要查询的数据id
+     * @return 勇士对话数据
+     */
+	public String getWarrior_state(String name, String id,String extra) throws IOException {
+		Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
+        if (extra.equals("0"))
+		{
+        Element element = doc.getElementById(id);
+        Elements tres = element.select("tr");
+        String state="";
+        for (Element tr:tres){
+        	state+=tr.text();
+        	state+="[enter]";//输入回车
+        } 
+        return state;
+        }
+        else {
+        	int num;
+        	try{
+        	   num=Integer.parseInt(extra);
+        	   if(num<1||num>25) 
+         		   num=1;
+        	  }catch(NumberFormatException e)
+        	  {
+        		  num=1;
+        	  }
+     	    Element element = doc.getElementById("hero_book_num");
+            Elements tres = element.select("tr");
+            Elements first =tres.get(0).children();
+            Elements wanted =tres.get(num).children();
+            String state="";
+            for (int i = 0; i < first.size(); i++){
+            	state+=first.get(i).text();
+            	state+=":";
+            	state+=wanted.get(i).text();
+            	state+=" ";
+            } 
+            return state;
+        		
+        }
+	}
+	
+	/**
+     * 通过id 查询勇士sp数据
+     * @param name 勇士名称
+     * @param id 要查询的数据id
+     * @return 勇士数据
+     */
+	public String getWarrior_sp(String name, String id) throws IOException {
+		Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
+        Integer i=1;
+        String sp = "";
+		while(true)
+        { 
+          String sp_n=id+"_n_"+i.toString();
+          String sp_r=id+"_r_"+i.toString();
+          i++;
+          Element element = doc.getElementById(sp_n);
+          Element element_r = doc.getElementById(sp_r);
+          if(element.text().length()==0) break;
+          else sp+=element.text()+" "+element_r.text()+"[enter]";
+        }
+		
+        return sp;
+		
+	}
 }
