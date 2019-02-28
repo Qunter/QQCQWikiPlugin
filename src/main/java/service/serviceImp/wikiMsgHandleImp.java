@@ -108,11 +108,12 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
     public String Warrior_Msg_Handle(RE_MSG_Group msg) {
     	//帮助类型
     	if(msg.getMsg().trim().indexOf("帮助")!=-1){
-    		System.out.println("执行帮助关键词");
-    		String usehelp="查询格式为：指令 勇士简称或名称 关键词 [CQ:enter]";
-    		usehelp+="1.指令包括‘查询’和‘帮助’，帮助不需要参数 [CQ:enter]";
-    		usehelp+="2.勇士简称或名称参考wiki简称页面 [CQ:enter]";
+    		System.out.println("执行帮助指令");
+    		String usehelp="查询格式为：指令 勇士简称或名称 关键词[CQ:enter]";
+    		usehelp+="1.指令包括‘查询’和‘帮助’，帮助不需要参数[CQ:enter]";
+    		usehelp+="2.勇士简称或名称参考wiki简称页面[CQ:enter]";
     		usehelp+="3.关键词如下："+keymap.keySet().toString();
+    		usehelp+="4.关键词-属性后可加空格和数字1-25表示继承书数";
         	return usehelp;
         }
     	
@@ -121,10 +122,10 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
         //过滤出勇士名称
         try {
             if(myList!=null&&myList.size()>0){
-            	//System.out.println(getWarriorData(myList.get(1),myList.get(0)));
-                return getWarriorData(myList.get(1),myList.get(0));
+            	//System.out.println(getWarriorData(myList.get(1),myList.get(0),myList.get(2)));
+                return getWarriorData(myList.get(1),myList.get(0),myList.get(2));
             }
-            return "未查询到数据";
+            return "未查询到勇士数据";
         }catch (Exception e){
             e.printStackTrace();
             return "消息异常";
@@ -141,7 +142,7 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
         //过滤出勇士名称
         try {
             if(myList!=null&&myList.size()>0){
-                return getWarriorData(myList.get(1),myList.get(0));
+                return getWarriorData(myList.get(1),myList.get(0),myList.get(2));
             }
             return "抱歉未查询到数据";
         }catch (Exception e){
@@ -157,11 +158,17 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @return 返回勇士数据
      * @throws IOException IO异常
      */
-    private String getWarriorData(String name ,String id) throws IOException {
+    private String getWarriorData(String name ,String id,String extra) throws IOException {
         if (map.containsKey(name)){
+        	switch(id){
+        	case "hero_dialogue":return wikiData.getWarrior_dialogue(map.get(name),id);
+        	case "hero_state":return wikiData.getWarrior_state(map.get(name),id,extra);
+        	case "hero_skill_sp":return wikiData.getWarrior_sp(map.get(name),id);
+        	default:break;
+        	}
             return wikiData.getWarrior_data(map.get(name),id);
         }else {
-        	return "未查询到数据";
+        	return "未查询到需要的数据";
         }
     }
 
@@ -172,20 +179,22 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @return
      */
     private List<String> Handle_Msg(RE_MSG_Group msg){
-    	String getMsg=msg.getMsg().trim().replaceAll("\r|\n", "");
-    	
         List<String> list = new ArrayList<String>();
         //查询格式   格式 勇士简称或名称 关键词
-        String keyword=keymap.get(getMsg.split(" ")[2]);
-        if(keyword!=null&&keyword.length()>0)
-        list.add(keyword);
-        else return null;
-        String heroname=getMsg.split(" ")[1];
-        if(heroname!=null&&heroname.length()>0)
-        list.add(heroname);
-        else return null;
+        String []keywords=msg.getMsg().trim().replaceAll("\r|\n", "").split(" ");
+        
+        	String keyword=keymap.get(keywords[2]);
+            if(keyword!=null&&keyword.length()>0)
+            list.add(keyword);
+            else return null;
+            String heroname=keywords[1];
+            if(heroname!=null&&heroname.length()>0)
+            list.add(heroname);
+            else return null;
+        if(keywords.length>3)
+        	list.add(keywords[3]);
+        else list.add("0");
         return list;
-
     }
 
     /**
