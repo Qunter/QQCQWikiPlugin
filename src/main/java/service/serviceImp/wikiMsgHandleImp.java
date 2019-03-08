@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 /** 前面有 * 的说明已经 就行处理可以返回消息
  * 图鉴的数据id
  综合评分=hero_score_all
@@ -159,17 +160,25 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @throws IOException IO异常
      */
     private String getWarriorData(String name ,String id,String extra) throws IOException {
-        if (map.containsKey(name)){
-        	switch(id){
-        	case "hero_dialogue":return wikiData.getWarrior_dialogue(map.get(name),id);
-        	case "hero_state":return wikiData.getWarrior_state(map.get(name),id,extra);
-        	case "hero_skill_sp":return wikiData.getWarrior_sp(map.get(name),id);
-        	default:break;
-        	}
-            return wikiData.getWarrior_data(map.get(name),id);
+        //允许只输入一个字来查找勇士，按最先匹配到的数据返回结果
+    	if (map.containsKey(name)){		
         }else {
+        	Set<String> keyset=  map.keySet();
+        	for (String str : keyset) {  
+        		if(str.indexOf(name)!=-1) {
+        			name=str; break;
+        		}
+        	}
         	return "未查询到需要的数据";
         }
+    	
+    	switch(id){
+    	case "hero_dialogue":return wikiData.getWarrior_dialogue(map.get(name),id);
+    	case "hero_state":return wikiData.getWarrior_state(map.get(name),id,extra);
+    	case "hero_skill_sp":return wikiData.getWarrior_sp(map.get(name),id);
+    	default:break;
+    	}
+        return wikiData.getWarrior_data(map.get(name),id);
     }
 
     /**
