@@ -1,4 +1,4 @@
-﻿package service.serviceImp;
+package service.serviceImp;
 
 import service.WikiFilterDataService;
 
