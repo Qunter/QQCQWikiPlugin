@@ -56,74 +56,74 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * 补充关键字库
      */
     public void putkeymap(){
-    	keymap= new HashMap<String,String>();
-    	keymap.put("勇士评价", "hero_est");
-    	keymap.put("评价", "hero_est");
-    	keymap.put("专武", "hero_wp_r6");
-    	keymap.put("专属武器", "hero_wp_r6");
-    	keymap.put("精粹武器", "hero_wp_r6");
-    	keymap.put("专属精粹武器", "hero_wp_r6");
-    	keymap.put("方块技能", "hero_skill");
-    	keymap.put("技能", "hero_skill");
-    	keymap.put("主动技能", "hero_skill_0");
-    	keymap.put("被动技能", "hero_skill_2");
-    	keymap.put("背景", "hero_story");
-    	keymap.put("故事", "hero_story");
-    	keymap.put("背景故事", "hero_story");
-    	keymap.put("特殊技能", "hero_skill_sp");
-    	keymap.put("sp", "hero_skill_sp");
-    	keymap.put("词条推荐", "hero_wp_attr");
-    	keymap.put("词条", "hero_wp_attr");
-    	keymap.put("符文推荐", "hero_wp_ct");
-    	keymap.put("符文", "hero_wp_ct");
-    	keymap.put("戒指", "hero_ring");
-    	keymap.put("戒指词条", "hero_ring");
-    	keymap.put("推荐阵容", "hero_team");
-    	keymap.put("组队", "hero_team");
-    	keymap.put("队伍", "hero_team");
-    	keymap.put("阵容", "hero_team");
-    	keymap.put("搭配", "hero_team");
-    	keymap.put("无专", "hero_skill_nwp");
-    	keymap.put("有专", "hero_skill_wp");
-    	keymap.put("消块", "hero_skill_m");
-    	keymap.put("消块机制", "hero_skill_m");
-    	//keymap.put("吃书", "hero_book");
-    	//keymap.put("继承", "hero_book");
-    	
-    	keymap.put("服装", "hero_costume");
-    	keymap.put("时装", "hero_costume");
-    	keymap.put("衣服", "hero_costume");
-    	keymap.put("小裙子", "hero_costume");
-    	keymap.put("对话", "hero_dialogue");
-    	keymap.put("彩蛋", "hero_dialogue");
-    	keymap.put("评分", "hero_score");
-    	keymap.put("英雄评分", "hero_score");
-    	keymap.put("属性", "hero_state");
+        keymap= new HashMap<String,String>();
+        keymap.put("勇士评价", "hero_est");
+        keymap.put("评价", "hero_est");
+        keymap.put("专武", "hero_wp_r6");
+        keymap.put("专属武器", "hero_wp_r6");
+        keymap.put("精粹武器", "hero_wp_r6");
+        keymap.put("专属精粹武器", "hero_wp_r6");
+        keymap.put("方块技能", "hero_skill");
+        keymap.put("技能", "hero_skill");
+        keymap.put("主动技能", "hero_skill_0");
+        keymap.put("被动技能", "hero_skill_2");
+        keymap.put("背景", "hero_story");
+        keymap.put("故事", "hero_story");
+        keymap.put("背景故事", "hero_story");
+        keymap.put("特殊技能", "hero_skill_sp");
+        keymap.put("sp", "hero_skill_sp");
+        keymap.put("词条推荐", "hero_wp_attr");
+        keymap.put("词条", "hero_wp_attr");
+        keymap.put("符文推荐", "hero_wp_ct");
+        keymap.put("符文", "hero_wp_ct");
+        keymap.put("戒指", "hero_ring");
+        keymap.put("戒指词条", "hero_ring");
+        keymap.put("推荐阵容", "hero_team");
+        keymap.put("组队", "hero_team");
+        keymap.put("队伍", "hero_team");
+        keymap.put("阵容", "hero_team");
+        keymap.put("搭配", "hero_team");
+        keymap.put("无专", "hero_skill_nwp");
+        keymap.put("有专", "hero_skill_wp");
+        keymap.put("消块", "hero_skill_m");
+        keymap.put("消块机制", "hero_skill_m");
+        //keymap.put("吃书", "hero_book");
+        //keymap.put("继承", "hero_book");
+
+        keymap.put("服装", "hero_costume");
+        keymap.put("时装", "hero_costume");
+        keymap.put("衣服", "hero_costume");
+        keymap.put("小裙子", "hero_costume");
+        keymap.put("对话", "hero_dialogue");
+        keymap.put("彩蛋", "hero_dialogue");
+        keymap.put("评分", "hero_score");
+        keymap.put("英雄评分", "hero_score");
+        keymap.put("属性", "hero_state");
     }
-    
+
     /**
      * 群消息处理中枢
      * @param msg 群消息类
      * @return 查询结果
      */
     public String Warrior_Msg_Handle(RE_MSG_Group msg) {
-    	//帮助类型
-    	if(msg.getMsg().trim().indexOf("帮助")!=-1){
-    		System.out.println("执行帮助指令");
-    		String usehelp="查询格式为：指令 勇士简称或名称 关键词[CQ:enter]";
-    		usehelp+="1.指令包括‘查询’和‘帮助’，帮助不需要参数[CQ:enter]";
-    		usehelp+="2.勇士简称或名称参考wiki简称页面[CQ:enter]";
-    		usehelp+="3.关键词如下："+keymap.keySet().toString();
-    		usehelp+="4.关键词-属性后可加空格和数字1-25表示继承书数";
-        	return usehelp;
+        //帮助类型
+        if(msg.getMsg().trim().indexOf("帮助")!=-1){
+            System.out.println("执行帮助指令");
+            String usehelp="查询格式为：指令 勇士简称或名称 关键词[CQ:enter]";
+            usehelp+="1.指令包括‘查询’和‘帮助’，帮助不需要参数[CQ:enter]";
+            usehelp+="2.勇士简称或名称参考wiki简称页面[CQ:enter]";
+            usehelp+="3.关键词如下："+keymap.keySet().toString();
+            usehelp+="4.关键词-属性后可加空格和数字1-25表示继承书数";
+            return usehelp;
         }
-    	
+
         //查询类型处理
         List<String> myList = Handle_Msg(msg);
         //过滤出勇士名称
         try {
             if(myList!=null&&myList.size()>0){
-            	//System.out.println(getWarriorData(myList.get(1),myList.get(0),myList.get(2)));
+                //System.out.println(getWarriorData(myList.get(1),myList.get(0),myList.get(2)));
                 return getWarriorData(myList.get(1),myList.get(0),myList.get(2));
             }
             return "未查询到勇士数据";
@@ -161,23 +161,28 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      */
     private String getWarriorData(String name ,String id,String extra) throws IOException {
         //允许只输入一个字来查找勇士，按最先匹配到的数据返回结果
-    	if (map.containsKey(name)){		
+
+        boolean flag=false;
+        if (map.containsKey(name)){
         }else {
-        	Set<String> keyset=  map.keySet();
-        	for (String str : keyset) {  
-        		if(str.indexOf(name)!=-1) {
-        			name=str; break;
-        		}
-        	}
-        	return "未查询到需要的数据";
+            Set<String> keyset=  map.keySet();
+            for (String str : keyset) {
+                if(str.indexOf(name)!=-1) {
+                    name=str;
+                    flag=true;
+                    break;
+                }
+            }
+            if(flag==false)
+                return "未查询到需要的数据";
         }
-    	
-    	switch(id){
-    	case "hero_dialogue":return wikiData.getWarrior_dialogue(map.get(name),id);
-    	case "hero_state":return wikiData.getWarrior_state(map.get(name),id,extra);
-    	case "hero_skill_sp":return wikiData.getWarrior_sp(map.get(name),id);
-    	default:break;
-    	}
+
+        switch(id){
+            case "hero_dialogue":return wikiData.getWarrior_dialogue(map.get(name),id);
+            case "hero_state":return wikiData.getWarrior_state(map.get(name),id,extra);
+            case "hero_skill_sp":return wikiData.getWarrior_sp(map.get(name),id);
+            default:break;
+        }
         return wikiData.getWarrior_data(map.get(name),id);
     }
 
@@ -191,17 +196,17 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
         List<String> list = new ArrayList<String>();
         //查询格式   格式 勇士简称或名称 关键词
         String []keywords=msg.getMsg().trim().replaceAll("\r|\n", "").split(" ");
-        
-        	String keyword=keymap.get(keywords[2]);
-            if(keyword!=null&&keyword.length()>0)
+
+        String keyword=keymap.get(keywords[2]);
+        if(keyword!=null&&keyword.length()>0)
             list.add(keyword);
-            else return null;
-            String heroname=keywords[1];
-            if(heroname!=null&&heroname.length()>0)
+        else return null;
+        String heroname=keywords[1];
+        if(heroname!=null&&heroname.length()>0)
             list.add(heroname);
-            else return null;
+        else return null;
         if(keywords.length>3)
-        	list.add(keywords[3]);
+            list.add(keywords[3]);
         else list.add("0");
         return list;
     }
