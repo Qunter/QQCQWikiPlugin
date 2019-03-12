@@ -1,4 +1,4 @@
-package entity;
+package cqwiki.cqp.me.entity;
 
 public class peopleEntity {
     private String name;

@@ -1,7 +1,7 @@
-package dao.daoImp;
+package cqwiki.cqp.me.dao.daoImp;
 
-import dao.queryWiki;
 
+import cqwiki.cqp.me.dao.queryWiki;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -159,6 +159,7 @@ public class queryWikiDao implements queryWiki {
         String state="";
         for (Element tr:tres){
         	state+=tr.text();
+
         	state+="[enter]";//输入回车
         } 
         return state;

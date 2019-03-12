@@ -1,4 +1,4 @@
-package dao.daoImp;
+package cqwiki.cqp.me.dao.daoImp;
 
 import jxl.Cell;
 import jxl.Sheet;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class ExcelUtilDao implements dao.ExcelUtil {
+public class ExcelUtilDao implements ExcelUtil {
 
     @Override
     public List<List<String>> readExcel(File file) {

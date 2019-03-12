@@ -1,11 +1,9 @@
-package service.serviceImp;
+package cqwiki.cqp.me.service.serviceImp;
 
-import com.mumu.msg.RE_MSG_Group;
-import com.mumu.msg.RE_MSG_Private;
 
-import dao.daoImp.queryWikiDao;
-import dao.queryWiki;
-import service.wikiMsgHandle;
+import cqwiki.cqp.me.dao.daoImp.queryWikiDao;
+import cqwiki.cqp.me.dao.queryWiki;
+import cqwiki.cqp.me.service.WikiMsgHandle;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+
 /** 前面有 * 的说明已经 就行处理可以返回消息
  * 图鉴的数据id
  综合评分=hero_score_all
@@ -42,11 +42,11 @@ import java.util.Set;
  * 全部评分=hero_score
  * 能力值=hero_state
  */
-public class wikiMsgHandleImp implements wikiMsgHandle {
+public class WikiMsgHandleImp implements WikiMsgHandle {
     private static queryWiki wikiData;
     private static Map<String,String> map;
     Map<String,String> keymap ;
-    public wikiMsgHandleImp(){
+    public WikiMsgHandleImp(){
         wikiData =new queryWikiDao();
         //加载模糊匹配数据
         map = wikiData.blurryWarriorName();
@@ -106,15 +106,16 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @param msg 群消息类
      * @return 查询结果
      */
-    public String Warrior_Msg_Handle(RE_MSG_Group msg) {
+    public String Warrior_Msg_Handle(String msg) {
         //帮助类型
-        if(msg.getMsg().trim().indexOf("帮助")!=-1){
+        if(msg.trim().contains("帮助")){
             System.out.println("执行帮助指令");
-            String usehelp="查询格式为：指令 勇士简称或名称 关键词[CQ:enter]";
+            String usehelp="查询格式为：指令 勇士简称或名称 关键词";
             usehelp+="1.指令包括‘查询’和‘帮助’，帮助不需要参数[CQ:enter]";
             usehelp+="2.勇士简称或名称参考wiki简称页面[CQ:enter]";
             usehelp+="3.关键词如下："+keymap.keySet().toString();
             usehelp+="4.关键词-属性后可加空格和数字1-25表示继承书数";
+            System.out.println(usehelp);
             return usehelp;
         }
 
@@ -132,12 +133,13 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
             return "消息异常";
         }
     }
+
     /**
      * 私聊消息处理中枢
      * @param msg 群消息类
      * @return 查询结果
      */
-    public String Warrior_Msg_Handle_RE_MSG_Private(RE_MSG_Private msg){
+    public String Warrior_Msg_Handle_RE_MSG_Private(String msg){
         //查询类型处理
         List<String> myList = Handle_Msg_Private(msg);
         //过滤出勇士名称
@@ -192,10 +194,10 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @param msg
      * @return
      */
-    private List<String> Handle_Msg(RE_MSG_Group msg){
+    private List<String> Handle_Msg(String msg){
         List<String> list = new ArrayList<String>();
         //查询格式   格式 勇士简称或名称 关键词
-        String []keywords=msg.getMsg().trim().replaceAll("\r|\n", "").split(" ");
+        String []keywords=msg.trim().replaceAll("\r|\n", "").split(" ");
 
         String keyword=keymap.get(keywords[2]);
         if(keyword!=null&&keyword.length()>0)
@@ -216,78 +218,78 @@ public class wikiMsgHandleImp implements wikiMsgHandle {
      * @param msg 私聊类
      * @return 处理结果
      */
-    private List<String> Handle_Msg_Private(RE_MSG_Private msg){
+    private List<String> Handle_Msg_Private(String msg){
         List<String> list = new ArrayList<String>();
         //查询勇士评价 查询格式 @机器人 #查询勇士评价:勇士名称
-        if(msg.getMsg().split(":")[0].equals("查询勇士评价")){
+        if(msg.split(":")[0].equals("查询勇士评价")){
             list.add("hero_est");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询勇士方块技能")){
+        if(msg.split(":")[0].equals("查询勇士方块技能")){
             list.add("hero_skill");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询专属精粹武器")){
+        if(msg.split(":")[0].equals("查询专属精粹武器")){
             list.add("hero_wp");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询专武评价")){
+        if(msg.split(":")[0].equals("查询专武评价")){
             list.add("hero_wp_est");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询背景故事")){
+        if(msg.split(":")[0].equals("查询背景故事")){
             list.add("hero_story");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
         //web id 暂时没加上 hero_skill_sp
-        if(msg.getMsg().split(":")[0].equals("查询特殊技能推荐")){
+        if(msg.split(":")[0].equals("查询特殊技能推荐")){
             list.add("hero_skill_sp");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询词条推荐")){
+        if(msg.split(":")[0].equals("查询词条推荐")){
             list.add("hero_wp_attr");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询符文推荐")){
+        if(msg.split(":")[0].equals("查询符文推荐")){
             list.add("hero_wp_ct");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询戒指词条推荐")){
+        if(msg.split(":")[0].equals("查询戒指词条推荐")){
             list.add("hero_ring");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询推荐阵容搭配")){
+        if(msg.split(":")[0].equals("查询推荐阵容搭配")){
             list.add("hero_team");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询有专武技能判定")){
+        if(msg.split(":")[0].equals("查询有专武技能判定")){
             list.add("hero_skill_wp");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询无专武技能判定")){
+        if(msg.split(":")[0].equals("查询无专武技能判定")){
             list.add("hero_skill_nwp");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询消块机制")){
+        if(msg.split(":")[0].equals("查询消块机制")){
             list.add("hero_skill_m");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
-        if(msg.getMsg().split(":")[0].equals("查询吃书推荐")){
+        if(msg.split(":")[0].equals("查询吃书推荐")){
             list.add("hero_book");
-            list.add(msg.getMsg().split(":")[1]);
+            list.add(msg.split(":")[1]);
             return list;
         }
         return null;

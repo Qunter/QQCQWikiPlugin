@@ -1,4 +1,4 @@
-package dao;
+package cqwiki.cqp.me.dao;
 
 import java.io.IOException;
 import java.util.Map;
