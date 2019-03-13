@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.sobte.cqp.jcq.util.StringHelper.lineSeparator;
+
 
 /** 前面有 * 的说明已经 就行处理可以返回消息
  * 图鉴的数据id
@@ -110,10 +112,10 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
         //帮助类型
         if(msg.trim().contains("帮助")){
             System.out.println("执行帮助指令");
-            String usehelp="查询格式为：指令 勇士简称或名称 关键词";
-            usehelp+="1.指令包括‘查询’和‘帮助’，帮助不需要参数[CQ:enter]";
-            usehelp+="2.勇士简称或名称参考wiki简称页面[CQ:enter]";
-            usehelp+="3.关键词如下："+keymap.keySet().toString();
+            String usehelp="查询格式为：指令 勇士简称或名称 关键词"+lineSeparator;
+            usehelp+="1.指令包括‘查询’和‘帮助’，帮助不需要参数"+lineSeparator;
+            usehelp+="2.勇士简称或名称参考wiki简称页面"+lineSeparator;
+            usehelp+="3.关键词如下："+keymap.keySet().toString()+lineSeparator;
             usehelp+="4.关键词-属性后可加空格和数字1-25表示继承书数";
             System.out.println(usehelp);
             return usehelp;

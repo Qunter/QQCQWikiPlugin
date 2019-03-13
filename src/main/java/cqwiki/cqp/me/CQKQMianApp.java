@@ -15,8 +15,18 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
 //    private static final String KQURL="ws://localhost:25303";
 //    private static KQWebClient cc;
     public static void main(String[] args) throws URISyntaxException {
-//         cc= new KQWebClient(new URI(KQURL));
-//         cc.addQQMSGListenner(new CQMSGAdapter(cc));
+        // CQ此变量为特殊变量，在JCQ启动时实例化赋值给每个插件，而在测试中可以用CQDebug类来代替他
+        CQ = new CQDebug();//new CQDebug("应用目录","应用名称") 可以用此构造器初始化应用的目录
+        CQ.logInfo("[JCQ] TEST Demo", "测试启动");// 现在就可以用CQ变量来执行任何想要的操作了
+        // 要测试主类就先实例化一个主类对象
+        CQKQMianApp demo = new CQKQMianApp();
+        // 下面对主类进行各方法测试,按照JCQ运行过程，模拟实际情况
+        demo.startup();// 程序运行开始 调用应用初始化方法
+        demo.enable();// 程序初始化完成后，启用应用，让应用正常工作
+        demo.groupMsg(0, 10006, 3456789012L, 3333333334L, "", "查询 黄毛", 0);
+        /**
+         * 以上均为测试代码
+         */
     }
 
     /**
@@ -26,7 +36,7 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
      */
     public String appInfo() {
         // 应用AppID,规则见 http://d.cqp.me/Pro/开发/基础信息#appid
-        String AppID = "me.cqp.hanyuu.weather";// 记住编译后的文件和json也要使用appid做文件名
+        String AppID = "me.cqp.qunter.cqkq";// 记住编译后的文件和json也要使用appid做文件名
         /**
          * 本函数【禁止】处理其他任何代码，以免发生异常情况。
          * 如需执行初始化代码请在 startup 事件中执行（Type=1001）。
