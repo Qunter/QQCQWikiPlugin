@@ -153,7 +153,7 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         if (wikiFilterDataServiceImp.msgFilterSpecific(msg,String.valueOf(fromGroup), null)==false)
         return MSG_IGNORE;
         //at单独放一行,其余内容另起
-        CQ.sendGroupMsg(fromGroup,CC.at(fromQQ) +lineSeparator+wikiMsgHandleImp.Warrior_Msg_Handle(msg));
+        CQ.sendGroupMsg(fromGroup,CC.at(fromQQ) +lineSeparator+wikiMsgHandleImp.Warrior_Msg_Handle(msg)+lineSeparator+lineSeparator+"本机器人的全部知识都来源于着迷wiki克鲁赛德战记专区,希望大家多多支持"+lineSeparator+"http://wiki.joyme.com/cq/%E9%A6%96%E9%A1%B5");
         return MSG_IGNORE;
     }
 

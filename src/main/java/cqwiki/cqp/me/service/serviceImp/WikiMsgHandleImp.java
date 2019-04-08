@@ -112,13 +112,14 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
         //帮助类型
         if(msg.trim().contains("帮助")){
             System.out.println("执行帮助指令");
-            String usehelp="查询格式为：指令 勇士简称或名称 关键词"+lineSeparator;
-            usehelp+="1.指令包括‘查询’和‘帮助’，帮助不需要参数"+lineSeparator;
-            usehelp+="2.勇士简称或名称参考wiki简称页面"+lineSeparator;
-            usehelp+="3.关键词如下："+keymap.keySet().toString()+lineSeparator;
-            usehelp+="4.关键词-属性后可加空格和数字1-25表示继承书数";
+            String helpHint =
+                    "这里是可爱的wiki机器人,请按照如下方式调教我:"+lineSeparator
+                    +"查tiao询jiao格式为：查询+空格+勇士简称或名称+空格+关键词"+lineSeparator
+                    +"目前提供查询的关键词如下："+keymap.keySet().toString()+lineSeparator
+                    +"勇士简称或名称可参考wiki简称页面"+lineSeparator
+                    +"关键词\"属性\"后可加空格和数字1-25表示查询该继承书数下的属性"+lineSeparator;
             //System.out.println(usehelp);
-            return usehelp;
+            return helpHint;
         }
 
         //查询类型处理
