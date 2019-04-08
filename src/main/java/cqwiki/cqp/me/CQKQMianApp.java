@@ -2,17 +2,21 @@ package cqwiki.cqp.me;
 
 import com.sobte.cqp.jcq.entity.*;
 import com.sobte.cqp.jcq.event.JcqAppAbstract;
+
 import cqwiki.cqp.me.service.serviceImp.WikiMsgHandleImp;
+import cqwiki.cqp.me.service.serviceImp.WikiFilterDataServiceImp;
 
 import javax.swing.*;
+
 import java.net.URISyntaxException;
 
 public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
     private WikiMsgHandleImp wikiMsgHandleImp = new WikiMsgHandleImp();
+    private WikiFilterDataServiceImp wikiFilterDataServiceImp = new WikiFilterDataServiceImp();
     /**
      * KQURL 酷Q本机地址
      */
-//    private static final String KQURL="ws://localhost:25303";
+//    private static final String KQURLt="ws://localhost:25303";
 //    private static KQWebClient cc;
     public static void main(String[] args) throws URISyntaxException {
         // CQ此变量为特殊变量，在JCQ启动时实例化赋值给每个插件，而在测试中可以用CQDebug类来代替他
@@ -23,12 +27,11 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         // 下面对主类进行各方法测试,按照JCQ运行过程，模拟实际情况
         demo.startup();// 程序运行开始 调用应用初始化方法
         demo.enable();// 程序初始化完成后，启用应用，让应用正常工作
-        demo.groupMsg(0, 10006, 3456789012L, 3333333334L, "", "查询 黄毛", 0);
+        //demo.groupMsg(0, 10006, 755474800L, 3333333334L, "", "查询 黄毛 属性", 0);
         /**
          * 以上均为测试代码
-         */
+         */ 
     }
-
     /**
      * 打包后将不会调用 请不要在此事件中写其他代码
      *
@@ -57,6 +60,9 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         String appDirectory = CQ.getAppDirectory();
         // 返回如：D:\CoolQ\app\com.sobte.cqp.jcq\app\com.example.demo\
         // 应用的所有数据、配置【必须】存放于此目录，避免给用户带来困扰。
+        //System.out.println(appDirectory);
+        //CQ.logInfo("[JCQ] TEST", appDirectory);
+        wikiFilterDataServiceImp.init(appDirectory+"group.txt");
         return 0;
     }
 
@@ -138,23 +144,12 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
             // 将匿名用户信息放到 anonymous 变量中
             Anonymous anonymous = CQ.getAnonymous(fromAnonymous);
         }
-
-        // 解析CQ码案例 如：[CQ:at,qq=100000]
-        // 解析CQ码 常用变量为 CC(CQCode) 此变量专为CQ码这种特定格式做了解析和封装
-        // CC.analysis();// 此方法将CQ码解析为可直接读取的对象
-        // 解析消息中的QQID
-        //long qqId = CC.getAt(msg);// 此方法为简便方法，获取第一个CQ:at里的QQ号，错误时为：-1000
-        //List<Long> qqIds = CC.getAts(msg); // 此方法为获取消息中所有的CQ码对象，错误时返回 已解析的数据
-        // 解析消息中的图片
-        //CQImage image = CC.getCQImage(msg);// 此方法为简便方法，获取第一个CQ:image里的图片数据，错误时打印异常到控制台，返回 null
-        //List<CQImage> images = CC.getCQImages(msg);// 此方法为获取消息中所有的CQ图片数据，错误时打印异常到控制台，返回 已解析的数据
-
-        // 这里处理消息
-
-        ;
+        
         System.out.println("从群号: "+fromGroup+"中 [接收_"+fromQQ+"的消息]:"+msg);
-        CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你发送了这样的消息：" + msg + "\n来自Java插件");
-        CQ.sendGroupMsg(fromGroup,wikiMsgHandleImp.Warrior_Msg_Handle(msg));
+        //CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你发送了这样的消息：" + msg + "\n来自Java插件");
+        if (wikiFilterDataServiceImp.msgFilterSpecific(msg,String.valueOf(fromGroup), null)==false)
+        return MSG_IGNORE;
+        CQ.sendGroupMsg(fromGroup,CC.at(fromQQ) +wikiMsgHandleImp.Warrior_Msg_Handle(msg));
         return MSG_IGNORE;
     }
 

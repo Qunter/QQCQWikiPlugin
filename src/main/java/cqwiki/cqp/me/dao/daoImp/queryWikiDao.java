@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
+import static com.sobte.cqp.jcq.util.StringHelper.lineSeparator;
 /**
  *   刚才添加了图鉴的id
      综合评分=hero_score_all
@@ -139,7 +139,7 @@ public class queryWikiDao implements queryWiki {
         		dialogue+=talk.get(i).text();
         		dialogue+=" ";	
         }
-        dialogue+="[enter]";//输入回车
+        dialogue+=lineSeparator;//输入回车
         }
         return dialogue;
     }
@@ -160,7 +160,7 @@ public class queryWikiDao implements queryWiki {
         for (Element tr:tres){
         	state+=tr.text();
 
-        	state+="[enter]";//输入回车
+        	state+=lineSeparator;//输入回车
         } 
         return state;
         }
@@ -183,7 +183,7 @@ public class queryWikiDao implements queryWiki {
             	state+=first.get(i).text();
             	state+=":";
             	state+=wanted.get(i).text();
-            	state+=" ";
+            	state+=lineSeparator;
             } 
             return state;
         		
@@ -208,7 +208,7 @@ public class queryWikiDao implements queryWiki {
           Element element = doc.getElementById(sp_n);
           Element element_r = doc.getElementById(sp_r);
           if(element.text().length()==0) break;
-          else sp+=element.text()+" "+element_r.text()+"[enter]";
+          else sp+=element.text()+" "+element_r.text()+lineSeparator;
         }
 		
         return sp;

@@ -117,7 +117,7 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
             usehelp+="2.勇士简称或名称参考wiki简称页面"+lineSeparator;
             usehelp+="3.关键词如下："+keymap.keySet().toString()+lineSeparator;
             usehelp+="4.关键词-属性后可加空格和数字1-25表示继承书数";
-            System.out.println(usehelp);
+            //System.out.println(usehelp);
             return usehelp;
         }
 
@@ -126,8 +126,8 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
         //过滤出勇士名称
         try {
             if(myList!=null&&myList.size()>0){
-                //System.out.println(getWarriorData(myList.get(1),myList.get(0),myList.get(2)));
-                return getWarriorData(myList.get(1),myList.get(0),myList.get(2));
+                //System.out.println(getWarriorData(myList.get(0),myList.get(1),myList.get(2)));
+                return getWarriorData(myList.get(0),myList.get(1),myList.get(2));
             }
             return "未查询到勇士数据";
         }catch (Exception e){
@@ -147,7 +147,7 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
         //过滤出勇士名称
         try {
             if(myList!=null&&myList.size()>0){
-                return getWarriorData(myList.get(1),myList.get(0),myList.get(2));
+                return getWarriorData(myList.get(0),myList.get(1),myList.get(2));
             }
             return "抱歉未查询到数据";
         }catch (Exception e){
@@ -200,15 +200,22 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
         List<String> list = new ArrayList<String>();
         //查询格式   格式 勇士简称或名称 关键词
         String []keywords=msg.trim().replaceAll("\r|\n", "").split(" ");
-
-        String keyword=keymap.get(keywords[2]);
-        if(keyword!=null&&keyword.length()>0)
-            list.add(keyword);
-        else return null;
+        
+        
+        if(keywords.length>1)
+        {
         String heroname=keywords[1];
-        if(heroname!=null&&heroname.length()>0)
+        if(heroname.length()>0)
             list.add(heroname);
         else return null;
+        }
+        if(keywords.length>2)
+        {
+        String keyword=keymap.get(keywords[2]);
+        if(keyword.length()>0)
+            list.add(keyword);
+        else return null;
+        }
         if(keywords.length>3)
             list.add(keywords[3]);
         else list.add("0");
