@@ -10,9 +10,12 @@ import javax.swing.*;
 
 import java.net.URISyntaxException;
 
+import static com.sobte.cqp.jcq.util.StringHelper.lineSeparator;
+
 public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
     private WikiMsgHandleImp wikiMsgHandleImp = new WikiMsgHandleImp();
     private WikiFilterDataServiceImp wikiFilterDataServiceImp = new WikiFilterDataServiceImp();
+
     /**
      * KQURL 酷Q本机地址
      */
@@ -149,7 +152,8 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         //CQ.sendGroupMsg(fromGroup, CC.at(fromQQ) + "你发送了这样的消息：" + msg + "\n来自Java插件");
         if (wikiFilterDataServiceImp.msgFilterSpecific(msg,String.valueOf(fromGroup), null)==false)
         return MSG_IGNORE;
-        CQ.sendGroupMsg(fromGroup,CC.at(fromQQ) +wikiMsgHandleImp.Warrior_Msg_Handle(msg));
+        //at单独放一行,其余内容另起
+        CQ.sendGroupMsg(fromGroup,CC.at(fromQQ) +lineSeparator+wikiMsgHandleImp.Warrior_Msg_Handle(msg));
         return MSG_IGNORE;
     }
 
