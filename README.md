@@ -18,6 +18,7 @@ CQ WIKI QQ机器人插件
 
 ##### 一,正常使用
 1. 需要将工程打包成jar,改名为me.cqp.qunter.cqkq.jar,放入酷Q程序根目录下的data\app\com.sobte.cqp.jcq\app文件夹下
+运行程序后会生成与jar文件同名的文件夹，把group.txt放入，内容为群号，（只能接受一行数据）。
 2. 将工程里的me.cqp.qunter.cqkq.json一并放入上述文件夹下
 3. 打开酷Q -> 应用管理 -> [JCQ]开发工具 -> 启用
 4. [JCQ]开发工具 -> 菜单 -> 管理 -> CQKQMianApp -> 启用
