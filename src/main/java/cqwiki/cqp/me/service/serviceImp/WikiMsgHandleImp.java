@@ -121,11 +121,19 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
             //System.out.println(usehelp);
             return helpHint;
         }
-
+        if( msg.split(" ").length<=2){
+            msg = msg.split(" ")[1];
+            msg = msg.replace("吗","");
+            msg = msg.replace("?","!");
+            msg = msg.replace("？","!");
+            return msg+" 如果是勇士,请加上正确的查询参数哦";
+        }
+        System.out.println(msg);
         //查询类型处理
         List<String> myList = Handle_Msg(msg);
         //过滤出勇士名称
         try {
+
             if(myList!=null&&myList.size()>0){
                 //System.out.println(getWarriorData(myList.get(0),myList.get(1),myList.get(2)));
                 return getWarriorData(myList.get(0),myList.get(1),myList.get(2));
@@ -133,7 +141,8 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
             return "未查询到勇士数据";
         }catch (Exception e){
             e.printStackTrace();
-            return "消息异常";
+            System.out.println(e.getLocalizedMessage());
+            return "查询规则不正确,正确规则输入帮助查看";
         }
     }
 
@@ -202,25 +211,29 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
         //查询格式   格式 勇士简称或名称 关键词
         String []keywords=msg.trim().replaceAll("\r|\n", "").split(" ");
         
-        
-        if(keywords.length>1)
-        {
-        String heroname=keywords[1];
-        if(heroname.length()>0)
-            list.add(heroname);
-        else return null;
-        }
-        if(keywords.length>2)
-        {
-        String keyword=keymap.get(keywords[2]);
-        if(keyword.length()>0)
-            list.add(keyword);
-        else return null;
-        }
-        if(keywords.length>3)
-            list.add(keywords[3]);
-        else list.add("0");
-        return list;
+        try{
+            if(keywords.length>1)
+            {
+            String heroname=keywords[1];
+            if(heroname.length()>0)
+                list.add(heroname);
+            else return null;
+            }
+            if(keywords.length>2)
+            {
+            String keyword=keymap.get(keywords[2]);
+            if(keyword.length()>0)
+                list.add(keyword);
+            else return null;
+            }
+            if(keywords.length>3)
+                list.add(keywords[3]);
+            else list.add("0");
+            return list;
+            }
+        catch (Exception e){
+            return null;
+      }
     }
 
     /**
