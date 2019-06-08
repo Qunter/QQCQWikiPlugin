@@ -30,7 +30,9 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         // 下面对主类进行各方法测试,按照JCQ运行过程，模拟实际情况
         demo.startup();// 程序运行开始 调用应用初始化方法
         demo.enable();// 程序初始化完成后，启用应用，让应用正常工作
-        demo.groupMsg(0, 10006, 755474800L, 3333333334L, "", "查询 蛇剑 AAA", 0);
+        demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 黄毛1 XX", 0);
+        demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 黄毛1 词条", 0);
+        
         /**
          * 以上均为测试代码
          */ 
@@ -65,7 +67,7 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         // 应用的所有数据、配置【必须】存放于此目录，避免给用户带来困扰。
         System.out.println(appDirectory);
         //CQ.logInfo("[JCQ] TEST", appDirectory);
-       // wikiFilterDataServiceImp.init(appDirectory+"group.txt");
+        //wikiFilterDataServiceImp.init(appDirectory+"group.txt");
         return 0;
     }
 
@@ -153,7 +155,7 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         if (wikiFilterDataServiceImp.msgFilterSpecific(msg,String.valueOf(fromGroup), null)==false)
         return MSG_IGNORE;
         //at单独放一行,其余内容另起
-        CQ.sendGroupMsg(fromGroup,CC.at(fromQQ) +lineSeparator+wikiMsgHandleImp.Warrior_Msg_Handle(msg)+lineSeparator+lineSeparator+"本机器人的全部知识来源于着迷wiki克鲁赛德战记专区，谢谢大家对WIKI及十字军攻略组的支持"+lineSeparator+"http://wiki.joyme.com/cq/%E9%A6%96%E9%A1%B5");
+        CQ.sendGroupMsg(fromGroup,CC.at(fromQQ) +lineSeparator+wikiMsgHandleImp.Group_Msg_Handle(msg)+lineSeparator+lineSeparator+"本机器人的全部知识来源于着迷wiki克鲁赛德战记专区，谢谢大家对WIKI及十字军攻略组的支持"+lineSeparator+"http://wiki.joyme.com/cq/%E9%A6%96%E9%A1%B5");
         return MSG_IGNORE;
     }
 
