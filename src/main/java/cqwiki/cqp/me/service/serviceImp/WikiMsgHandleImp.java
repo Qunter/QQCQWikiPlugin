@@ -22,7 +22,7 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
 		// TODO Auto-generated method stub
 		//帮助类型
 		msg=msg.trim().replaceAll("\r|\n", "");
-		if(msg.indexOf("帮助")==0){
+		if(msg.indexOf("帮助")==0&&msg.length()==2){
             System.out.println("执行帮助指令");
             String helpHint =
                     "这里是可爱的wiki机器人,请按照如下方式调教我:"+lineSeparator
@@ -35,23 +35,21 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
             //System.out.println(usehelp);
             return helpHint;
         }
-		if(msg.split(" ").length>1)
-        {
-        String stone=msg.split(" ")[1];
-        if(stone.indexOf("符文")==0){
-        	return StoneHandle.Stone_Msg_Handle(msg.trim().replaceAll("\r|\n", ""));
-        }
-        if(stone.indexOf("石头")==0){
-        	return StoneHandle.Stonetype_Msg_Handle(msg.trim().replaceAll("\r|\n", ""));
-        }
-        }
-    	else{
+		if(msg.split(" ").length>1){
+            String stone=msg.split(" ")[1];
+            if(stone.indexOf("符文")==0){
+                return StoneHandle.Stone_Msg_Handle(msg.trim().replaceAll("\r|\n", ""));
+            }
+            if(stone.indexOf("石头")==0){
+                return StoneHandle.Stonetype_Msg_Handle(msg.trim().replaceAll("\r|\n", ""));
+            }
+        } else {
     		return "接下来要输入石头,符文或勇士名称,具体可输入帮助查看。";
     	}
         System.out.println(msg);
         //查询类型处理
         try{
-        return WarriorHandle.Warrior_Msg_Handle(msg);
+           return WarriorHandle.Warrior_Msg_Handle(msg);
         }catch (Exception e){
             e.printStackTrace();
             System.out.println(e.getLocalizedMessage());

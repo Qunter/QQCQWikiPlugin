@@ -30,8 +30,8 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         // 下面对主类进行各方法测试,按照JCQ运行过程，模拟实际情况
         demo.startup();// 程序运行开始 调用应用初始化方法
         demo.enable();// 程序初始化完成后，启用应用，让应用正常工作
-        demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 黄毛1 XX", 0);
-        demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 黄毛1 词条", 0);
+     //   demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 黄毛1 XX", 0);
+        demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 胡子 属性 5", 0);
         
         /**
          * 以上均为测试代码

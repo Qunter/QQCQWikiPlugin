@@ -104,60 +104,28 @@ public class WikiWarriorHandleImp implements WikiWarriorHandle{
      * @return 查询结果
      */
     public String Warrior_Msg_Handle(String msg) {
-    	List<String> list = new ArrayList<String>();
         //查询格式:  格式 勇士简称或名称 关键词
-        String []keywords=msg.split(" ");
-        
+        String [] keywords=msg.split(" ");
         try{
-        	//允许只输入一个字来查找勇士，按最先匹配到的数据返回结果
-        	if(keywords.length>1){
-        	   if(keywords[1].indexOf("帮助")==0){
-        		   return "接下来要输入石头,符文或勇士名称,勇士名称可参考 http://wiki.joyme.com/cq/克鲁赛德战记英雄简称盘点。";
-        	   }
-        	   if(keywords.length>2){
-			      String heroname=keywords[1];
-			      boolean flag=false;
-			      if(map.containsKey(heroname)){}
-			      else {
-			         Set<String> keyset=  map.keySet();
-			         for (String str : keyset) {
-			            if(str.indexOf(heroname)!=-1) {
-			               heroname=str;
-			               flag=true;
-			               break;
-			               }
-			            }
-			            if(flag==false)
-			                return "找不到名为{"+heroname+"}的勇士，勇士简称查找可到http://wiki.joyme.com/cq/克鲁赛德战记英雄简称盘点";
-			        	}
-			    	}else{
-			    		return keywords[1]+" 如果是勇士,请加上正确的查询参数哦";
-			    	}
-        	   
+                //判断是否存在 三个参数
+               if(keywords.length>2){
+                   //查找勇士简称
+                  if(!map.containsKey(keywords[1])){
+                      return "找不到名为{"+keywords[1]+"}的勇士，勇士简称查找可到http://wiki.joyme.com/cq/克鲁赛德战记英雄简称盘点";
+                  }
+               }else{
+                   return keywords[1]+" 如果是勇士,请加上正确的查询参数哦";
+               }
+            //判断是否为 查询勇士属性
+            if(keywords.length>3&&keywords[2].equals("属性")){
+                return getWarriorData(keywords[1],keymap.get(keywords[2]),keywords[3]);
             }
-        	
-        	if(keywords.length>2)
-            {
-        		if(keywords[2].indexOf("帮助")==0){
-         		   return "关键字词库为"+keymap.keySet().toString();
-         	   }
-            String keyword=keymap.get(keywords[2]);
-            if(keyword!=null&&keyword.length()>0){
-            	list.add(keyword);
-            }
-            else return "找不到关键字"+keywords[2]+"，可查看词库"+keymap.keySet().toString();
-            }
-        	
-        	if(keywords.length>3)
-                list.add(keywords[3]);
-            else list.add("0");
-        	
-            return getWarriorData(list.get(0),list.get(1),list.get(2));
-            }
+            return getWarriorData(keywords[1],keymap.get(keywords[2]),"0");
+        }
         catch (Exception e){
-            return null;
-      }
-
+            e.printStackTrace();
+            return msg+" 失败";
+        }
     }
     /**
      * 返回 勇士数据方法
