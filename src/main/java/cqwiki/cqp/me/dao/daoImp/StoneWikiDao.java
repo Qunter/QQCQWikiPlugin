@@ -36,7 +36,7 @@ public class StoneWikiDao implements StoneWiki{
         }
         return stone;
 		}catch(Exception e){
-			return null;
+			return  "获取wiki符文数据出错";
   	  	}
 	}
 	public List<String> AllStoneName() {
@@ -120,7 +120,7 @@ public class StoneWikiDao implements StoneWiki{
             return content;
 	        }catch (Exception e){
 	            e.printStackTrace();
-	            return null;
+	            return "按类别获取wiki符文数据出错";
 	        }
 	}
 }

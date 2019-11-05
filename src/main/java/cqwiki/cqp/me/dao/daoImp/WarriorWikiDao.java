@@ -173,7 +173,7 @@ public class WarriorWikiDao implements WarriorWiki {
             String state="";
         	try{
         	   num=Integer.parseInt(extra);
-        	   if(num<1||num>25) {   
+        	   if(num<1||num>30) {   
         		   num=1;state="调整为1书"+lineSeparator;
         	   }
         	  }catch(NumberFormatException e){

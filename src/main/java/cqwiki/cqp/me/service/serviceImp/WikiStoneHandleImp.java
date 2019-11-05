@@ -1,42 +1,30 @@
 package cqwiki.cqp.me.service.serviceImp;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cqwiki.cqp.me.dao.StoneWiki;
 import cqwiki.cqp.me.dao.daoImp.StoneWikiDao;
 import cqwiki.cqp.me.service.WikiStoneHandle;
 import static com.sobte.cqp.jcq.util.StringHelper.lineSeparator;
+import static cqwiki.cqp.me.StaticMap.ALLSTONE;
+import static cqwiki.cqp.me.StaticMap.CLASSMAP;
+
+
+
+/*
+类型 固有= inherence 一般= ordinary 套装= set
+品级 普通= common  稀有= rare  史诗= epic
+星级  1 = one  2= two  3= three
+*/
 public class WikiStoneHandleImp implements WikiStoneHandle{
-	 Map<String,String> classmap;
+	 
 	 private static StoneWiki stoneData;
-	 private static List<String> allstone;
 	 public WikiStoneHandleImp(){
 	    stoneData =new StoneWikiDao();
-	    //加载模糊匹配数据
-	    allstone = stoneData.AllStoneName();
-	    putkeymap();
+	    
 	}
-	 /*
-	 类型 固有= inherence 一般= ordinary 套装= set
-	 品级 普通= common  稀有= rare  史诗= epic
-	 星级  1 = one  2= two  3= three
-	 */
-	 public void putkeymap(){
-		 classmap= new HashMap<String,String>();
-		 classmap.put("固有", "inherence_data-type");
-		 classmap.put("一般", "ordinary_data-type");
-		 classmap.put("套装", "set_data-type");
-		 classmap.put("普通", "common_data-rank");
-		 classmap.put("稀有", "rare_data-rank");
-		 classmap.put("史诗", "epic_data-rank");
-		 classmap.put("1", "one_data-grade");
-		 classmap.put("2", "two_data-grade");
-		 //classmap.put("3", "three_data-grade");
-	    }
-	
-	 	    
+  
 	//通过符文名查询
 	@Override
 	public String Stone_Msg_Handle(String msg) {
@@ -49,9 +37,9 @@ public class WikiStoneHandleImp implements WikiStoneHandle{
 			if(stonename.indexOf("帮助")==0){
 				return "接下来输入最简的符文名，返回最先匹配到的数据，符文简称查找可到http://wiki.joyme.com/cq/模板:符文一览";
 			}
-	        if (allstone.contains(stonename)){
+	        if (ALLSTONE.contains(stonename)){
 	        }else {
-	            for (String str : allstone) {
+	            for (String str : ALLSTONE) {
 	                if(str.indexOf(stonename)!=-1) {
 	                	stonename=str;
 	                    flag=true;
@@ -76,17 +64,17 @@ public class WikiStoneHandleImp implements WikiStoneHandle{
 		String typename="";
 		Map<String,String> category= new HashMap<String,String>();//类型//品级//星级
 		if(typemsg.length<=2){
-			return "接下来输入至少一种右边括号里的内容，参数包含:类型(固有,一般,套装),品级(普通,稀有,史诗),星级(1,2),其它情况(参数错误,帮助)";
+			return "接下来输入至少一种右边括号里的内容，参数包含:类型(固有,一般,套装),品级(普通,稀有,史诗),星级(1,2,3),其它情况(参数错误,帮助)";
 		}		
 		for(int i=2;i<typemsg.length;i++){
 			typename=typemsg[i];
 			if(i==2){
 				if(typename.indexOf("帮助")==0){
-					return "命令为:查询 石头 参数 。其中参数包含:类型(固有,一般,套装),品级(普通,稀有,史诗),星级(1,2),其它情况(参数错误,帮助)"+lineSeparator
+					return "命令为:查询 石头 参数 。其中参数包含:类型(固有,一般,套装),品级(普通,稀有,史诗),星级(1,2,3),其它情况(参数错误,帮助)"+lineSeparator
 							+"类型,品级,星级至少一种。其它只支持一种且只能放开头,参数输错则自动随机。";
 				}
 			}
-			typename=classmap.get(typename);
+			typename=CLASSMAP.get(typename);
 			if(typename!=null&&typename.length()>0){
 				category.put(typename.split("_")[0], typename.split("_")[1]);
 			}
