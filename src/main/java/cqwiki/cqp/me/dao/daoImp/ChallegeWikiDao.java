@@ -13,12 +13,11 @@ public class ChallegeWikiDao implements ChallegeWiki {
 	@Override
 	public String getTeam_data(String name) {
 		// TODO Auto-generated method stub
-		
 		String subtype=name.split("-")[0];
 		String maintype=name.split("-")[1];
 		String ep=name.split("-")[2];
 		try{
-		Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+maintype).get();//
+		Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+maintype).get();//
 		String content2 = "" ;
         Element element = doc.getElementById(subtype);
         if(element==null) {
@@ -59,7 +58,7 @@ public class ChallegeWikiDao implements ChallegeWiki {
 		String maintype=name.split("-")[1];
 		String ep=name.split("-")[2];
 		try{
-			Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+maintype).get();//
+			Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+maintype).get();//
 			String content = "" ;
 	        Element element = doc.getElementById(subtype);
 	        if(element==null) {
@@ -74,9 +73,9 @@ public class ChallegeWikiDao implements ChallegeWiki {
         Elements team_heros=null;//英雄名
         Elements team_attr=null;//英雄配置
         Elements sis_champ_tr=null;//其它配置
-        if(index<=0) return "最后一位参数出错，表示这是第几个队伍";
-        if(index>row$team_box_info.size()) index=0;
-        else index--;
+        
+        if(index<=row$team_box_info.size()&&index>0) {content+="当前第"+index+"队"+lineSeparator;index--;}
+        else {index=0;content+="已切换到第1队"+lineSeparator;}
         
         
         team_heros=row$team_box_info.get(index).getElementsByClass("col-md-5 team_hero");
@@ -104,7 +103,7 @@ public class ChallegeWikiDao implements ChallegeWiki {
 		String title=subtype+"-"+index;
 		String titlefromdiv="";
 		try{
-			Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+maintype).get();//
+			Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+maintype).get();//
 			String content = "" ;
 		Elements boss_title=doc.getElementsByClass("boss_title");//boss标题
 	    Elements boss_info=doc.getElementsByClass("boss_info");//boss表
@@ -123,8 +122,6 @@ public class ChallegeWikiDao implements ChallegeWiki {
 	    	}
 	    	
 	    }
-	    
-			
 		return content;
 		}catch(Exception e){
 			return "获取wiki挑战boss数据出错";

@@ -16,35 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.sobte.cqp.jcq.util.StringHelper.lineSeparator;
-/**
- *   刚才添加了图鉴的id
-     综合评分=hero_score_all
-     推图评分=hero_score_story
-     竞技评分=hero_score_pvp
-     挑战评分=hero_score_ch
-     勇士标签=hero_tag
-     勇士别名=hero_nickname
-     勇士评价=hero_est
-     勇士详解=hero_link
-     背景故事=hero_story
-     吃书推荐=hero_book
-     方块技能=hero_skill
-     技能说明=hero_skill_info
-     消块机制=hero_skill_m
-     无专武技能判定=hero_skill_nwp
-     有专武技能判定=hero_skill_wp
-     特殊技能推荐=hero_skill_sp
-     专属精粹武器=hero_wp
-     专武评价=hero_wp_est
-     词条推荐=hero_wp_attr
-     符文推荐=hero_wp_ct
-     戒指词条推荐=hero_ring
-     推荐阵容搭配=hero_team
-     服装=hero_costume
-     城镇对话=hero_dialogue
-     全部评分=hero_score
-     能力值=hero_state
- */
+
 
 public class WarriorWikiDao implements WarriorWiki {
     /**
@@ -69,8 +41,8 @@ public class WarriorWikiDao implements WarriorWiki {
      */
     public Map<String,String> blurryWarriorName() {
         try {
-            Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/克鲁赛德战记英雄简称盘点").get();//
-            Elements elements = doc.getElementsByClass("wikitable sortable");
+            Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/克鲁赛德战记英雄简称盘点").get();//
+            Elements elements = doc.getElementsByClass("btable sortable");
             Map<String,String> map = new HashMap<String,String>();
             for (Element element:elements){
                 Elements es = element.select("tr");
@@ -103,7 +75,8 @@ public class WarriorWikiDao implements WarriorWiki {
      * @throws Exception
      */
     public String getWarrior_Hero_est(String name) throws Exception{
-            Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
+    	name=name.replace(" ", "_");
+            Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+name).get();//
             Element element = doc.getElementById("hero_est");
             if(element==null){
                 Elements elements = doc.getElementsByClass("comment");
@@ -119,7 +92,8 @@ public class WarriorWikiDao implements WarriorWiki {
      * @return 勇士数据
      */
     public String getWarrior_data(String name ,String id) throws IOException {
-        Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
+    	name=name.replace(" ", "_");
+    	Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+name).get();//
         Element element = doc.getElementById(id);
         return element.select("#"+id).text();
     }
@@ -130,7 +104,8 @@ public class WarriorWikiDao implements WarriorWiki {
      * @return 勇士对话数据
      */
     public String getWarrior_dialogue(String name ,String id) throws IOException {
-        Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
+    	name=name.replace(" ", "_");
+    	Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+name).get();//
         Element element = doc.getElementById(id);
         String dialogue="";
         Elements tdes = element.select("td");
@@ -155,7 +130,8 @@ public class WarriorWikiDao implements WarriorWiki {
      * @return 勇士对话数据
      */
 	public String getWarrior_state(String name, String id,String extra) throws IOException {
-		Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
+		name=name.replace(" ", "_");
+		Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+name).get();//
         if (extra.equals("0"))
 		{
         Element element = doc.getElementById(id);
@@ -201,28 +177,26 @@ public class WarriorWikiDao implements WarriorWiki {
      * @return 勇士数据
      */
 	public String getWarrior_sp(String name, String id) throws IOException {
-		Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
+		name=name.replace(" ", "_");
+		Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+name).get();//
         Integer i=1;
         String sp = "";
-		while(true)
-        { 
-          String sp_n=id+"_n_"+i.toString();
-          String sp_r=id+"_r_"+i.toString();
-          i++;
-          Element element = doc.getElementById(sp_n);
-          Element element_r = doc.getElementById(sp_r);
-          if(element.text().length()==0) break;
-          else sp+=element.text()+" "+element_r.text()+lineSeparator;
-        }
-		
+        
+        Element element = doc.getElementById(id);
+        Elements tres = element.getElementsByClass("sp-skill-help");
+        
+       for (Element tr:tres){
+          sp+=tr.text()+lineSeparator;
+         }
         return sp;
 		
 	}
 
 	@Override
 	public String getWarrior_wpt(String name, String id) throws IOException {
+		name=name.replace(" ", "_");
 		// TODO Auto-generated method stub
-		Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();// 
+		Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+name).get();// 
         String wpt = "";
         Elements elements = doc.getElementsByClass(id);
         

@@ -16,24 +16,18 @@ public class StoneWikiDao implements StoneWiki{
 
 	@Override
 	public String getStone_data(String name, String id) {
+		name=name.replace(" ", "_");
 		try{
 		// TODO Auto-generated method stub
 		String stone="";
-		Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/"+name).get();//
-        Element element = doc.getElementById("rune");
-        if(element==null){
-            Elements elements = doc.getElementsByClass("comment");
-            return elements.select("#rune").text();
-        }
-        Elements divs= element.children();
-        for (int i = 0; i < divs.size(); i++){
-        	Elements divses= divs.get(i).children();
-        	for (int j = 0; j < divses.size(); j++){
-            	if(divses.get(j).text().trim().length()!=0) 
-            		stone+=divses.get(j).text()+lineSeparator;
+		Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+name).get();//
+       
+        Elements elements = doc.getElementsByClass("cqframe");
+        for (Element element:elements){
+        	stone+=element.text()+lineSeparator;
+            
             }
-        	
-        }
+        
         return stone;
 		}catch(Exception e){
 			return  "获取wiki符文数据出错";
@@ -41,7 +35,7 @@ public class StoneWikiDao implements StoneWiki{
 	}
 	public List<String> AllStoneName() {
         try {
-            Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/模板:符文一览").get();//
+            Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/模板:符文一览").get();//
             Elements elements = doc.getElementsByClass("wikitable sortable");
             List<String> list = new ArrayList<String>();
             for (Element element:elements){
@@ -62,7 +56,7 @@ public class StoneWikiDao implements StoneWiki{
 	public String getStonetype_data(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		 try {
-            Document doc =  Jsoup.connect("http://wiki.joyme.com/cq/模板:符文一览").get();//
+            Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/模板:符文一览").get();//
             Elements elements = doc.getElementsByClass("wikitable sortable");
             String content = "";
             int maxline=0;

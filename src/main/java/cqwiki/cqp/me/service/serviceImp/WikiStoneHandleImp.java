@@ -35,7 +35,7 @@ public class WikiStoneHandleImp implements WikiStoneHandle{
 		if(stonemsg.length>2){
 			stonename=stonemsg[2];
 			if(stonename.indexOf("帮助")==0){
-				return "接下来输入最简的符文名，返回最先匹配到的数据，符文简称查找可到http://wiki.joyme.com/cq/模板:符文一览";
+				return "接下来输入最简的符文名，返回最先匹配到的数据，符文简称查找可到http://wiki.biligame.com/cq/模板:符文一览";
 			}
 	        if (ALLSTONE.contains(stonename)){
 	        }else {
@@ -47,11 +47,11 @@ public class WikiStoneHandleImp implements WikiStoneHandle{
 	                }
 	            }
 	            if(flag==false)
-	                return "找不到名为{"+stonename+"}的符文，符文简称查找可到http://wiki.joyme.com/cq/模板:符文一览";
+	                return "找不到名为{"+stonename+"}的符文，符文简称查找可到http://wiki.biligame.com/cq/模板:符文一览";
 	        }  
 		}
 		else{
-			return "接下来输入最简的符文名，返回最先匹配到的数据，符文简称查找可到http://wiki.joyme.com/cq/模板:符文一览";
+			return "接下来输入最简的符文名，返回最先匹配到的数据，符文简称查找可到http://wiki.biligame.com/cq/模板:符文一览";
 		}
 		return stoneData.getStone_data(stonename,"");
 	}

@@ -24,26 +24,32 @@ public class WikiMsgHandleImp implements WikiMsgHandle {
 		// TODO Auto-generated method stub
 		//帮助类型
 		msg=msg.trim().replaceAll("\r|\n", "");
-		if(msg.indexOf("帮助")==0){
+		if(msg.indexOf("帮助")==0&&msg.length()==2){
             System.out.println("执行帮助指令");
             //System.out.println(usehelp);
             return README;
         }
 		if(msg.split(" ").length>1)
         {
-        String stone=msg.split(" ")[1];
-        if(stone.indexOf("符文")==0){
+        String type=msg.split(" ")[1];
+        if(type.indexOf("符文")==0){
         	return StoneHandle.Stone_Msg_Handle(msg.trim().replaceAll("\r|\n", ""));
         }
-        if(stone.indexOf("石头")==0){
+        if(type.indexOf("石头")==0){
         	return StoneHandle.Stonetype_Msg_Handle(msg.trim().replaceAll("\r|\n", ""));
         }
-        if(stone.indexOf("挑战")==0){
+        if(type.indexOf("挑战")==0){
         	return ChallengeHandle.Challenge_Msg_Handle(msg.trim().replaceAll("\r|\n", ""));
         }
+        if(type.indexOf("讨伐")==0){
+        	return ChallengeHandle.Crusade_Msg_Handle(msg.trim().replaceAll("\r|\n", ""));
+        }
+        if(type.indexOf("帮助")==0){
+		    return "接下来要输入石头,符文,挑战,讨伐+数字或勇士名称,勇士名称可参考 http://wiki.biligame.com/cq/克鲁赛德战记英雄简称盘点。";
+	    }
         }
     	else{
-    		return "接下来要输入石头,符文,挑战+数字或勇士名称,具体可输入帮助查看。";
+    		return "接下来要输入石头,符文,挑战,讨伐+数字或勇士名称,具体可只输入帮助查看。";
     	}
         System.out.println(msg);
         //查询类型处理
