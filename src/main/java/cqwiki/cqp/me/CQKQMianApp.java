@@ -33,12 +33,12 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         //demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "帮助", 0);
         //demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 石头 3 2 史诗 一般", 0);
         
-        //demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 挑战2 4", 0);
+        //demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 挑战10 阵容1", 0);
         //demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 挑战2 阵容  ", 0);
         //demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 挑战2 阵容4", 0);
         //demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 泉奈 sp", 0);
         //demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 符文 中枢", 0);
-        
+        //demo.groupMsg(0, 10006, 189309830L, 3333333334L, "", "查询 讨伐1", 0);
         /**
          * 以上均为测试代码
          */ 
@@ -161,7 +161,7 @@ public class CQKQMianApp extends JcqAppAbstract implements ICQVer, IMsg, IReques
         if (wikiFilterDataServiceImp.msgFilterSpecific(msg,String.valueOf(fromGroup), null)==false)
         return MSG_IGNORE;
         //at单独放一行,其余内容另起
-        CQ.sendGroupMsg(fromGroup,CC.at(fromQQ) +lineSeparator+wikiMsgHandleImp.Group_Msg_Handle(msg)+lineSeparator+lineSeparator+"本机器人的全部知识来源于B站WIKI克鲁赛德战记专区，谢谢大家对WIKI及十字军攻略组的支持"+lineSeparator+"http://wiki.biligame.com/cq");
+        CQ.sendGroupMsg(fromGroup,CC.at(fromQQ) +lineSeparator+wikiMsgHandleImp.Group_Msg_Handle(msg)+lineSeparator+lineSeparator+"本机器人的全部知识来源于B站wiki克鲁赛德战记专区，谢谢大家对WIKI及十字军攻略组的支持"+lineSeparator+"http://wiki.biligame.com/cq");
         return MSG_IGNORE;
     }
 

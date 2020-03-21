@@ -36,7 +36,7 @@ public class ChallegeWikiDao implements ChallegeWiki {
         for(int i = 0; i < team_mini_mb.size(); i++){
         	content2+=String.valueOf(i+1)+" "+team_mini_mb.get(i).text()+" ";
         	Elements imgs = team_mini_mb.get(i).select("img");
-        	for(int j = 0; j < 5; j++){
+        	for(int j = 0; j < imgs.size(); j++){
         		hero=imgs.get(j).attr("alt").replace("icon.png", "");
         		content2+=String.valueOf(j+1)+hero;
             }
@@ -46,7 +46,7 @@ public class ChallegeWikiDao implements ChallegeWiki {
         content2+="原来的命令加上队伍序号可查看队伍详情"+lineSeparator;
 		return content2;
 		}catch(Exception e){
-			return "获取wiki挑战阵容数据出错";
+			return "获取wiki挑战或讨伐阵容数据出错";
   	  	}
 	}
 
@@ -91,7 +91,7 @@ public class ChallegeWikiDao implements ChallegeWiki {
         
 		return content;
 		}catch(Exception e){
-			return "获取wiki挑战阵容数据出错";
+			return "获取wiki挑战或讨伐阵容数据出错";
   	  	}
 	}
 
@@ -105,26 +105,30 @@ public class ChallegeWikiDao implements ChallegeWiki {
 		try{
 			Document doc =  Jsoup.connect("http://wiki.biligame.com/cq/"+maintype).get();//
 			String content = "" ;
-		Elements boss_title=doc.getElementsByClass("boss_title");//boss标题
-	    Elements boss_info=doc.getElementsByClass("boss_info");//boss表
-	    
+		Elements boss_title=doc.getElementsByClass("cq_boss_box_title");//boss关卡
+		Elements boss_name=doc.getElementsByClass("cq_boss_box_content_name");//boss名
+		Elements boss_info=doc.getElementsByClass("cq_boss_box_content");//boss信息
 	    Elements helps;
 	    
-	    for(int i = 0; i < boss_title.size(); i++){
+	    for(int i = 0; i < boss_info.size(); i++){
 	    	titlefromdiv=boss_title.get(i).text();
 	    	if(titlefromdiv.toLowerCase().indexOf(title)!=-1){
-	    		content+=boss_info.get(i).getElementsByClass("boss_name_m").get(0).text()+lineSeparator;
-	    		content+=boss_info.get(i).getElementsByClass("boss_data_m").get(0).text()+lineSeparator;
-	    		helps=boss_info.get(i).getElementsByClass("help");
-	    		for(int j = 1; j < helps.size(); j++){
-	    			content+=helps.get(j).text()+lineSeparator;
-	    		}
+	    		content+=boss_title.get(i).text()+" "+boss_name.get(i).text()+lineSeparator;
+	    		content+=boss_info.get(i).getElementsByClass("cq_boss_box_content").get(0).text()+lineSeparator;
+	    		
+	    		//content+="能力值 ";
+	    		//Element tabel=boss_info.get(i).getElementsByClass("boss_attribute_table").get(0);
+	    		//Elements trs = tabel.select("tr");
+	    		//for(Element tr:trs){
+                //	content+=tr.text()+lineSeparator;
+                //}
+	            
 	    	}
 	    	
 	    }
 		return content;
 		}catch(Exception e){
-			return "获取wiki挑战boss数据出错";
+			return "获取wiki挑战或讨伐boss数据出错";
   	  	}
 	}
 }
